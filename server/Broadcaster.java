@@ -14,8 +14,12 @@ public class Broadcaster extends Thread {
     sockets = new ArrayList<Socket>();
   }
 
-  public synchronized void addSocket(Socket socket) {
+  public synchronized void add(Socket socket) {
     sockets.add(socket);
+  }
+
+  public synchronized void remove(Socket socket) {
+    sockets.remove(socket);
   }
 
   @Override
@@ -29,7 +33,7 @@ public class Broadcaster extends Thread {
           out.flush();
         }
       } catch (IOException | InterruptedException e) {
-        System.out.println(e.getCause() + ": " + e.getMessage());
+        e.printStackTrace();
       }
     }
   }

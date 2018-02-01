@@ -16,8 +16,7 @@ public class ChatServer {
 
     while (true) {
       Socket socket = serverSocket.accept();
-      broadcaster.addSocket(socket);
-      ServerThread thread = new ServerThread(mailbox, socket);
+      ServerThread thread = new ServerThread(mailbox, broadcaster, socket);
       thread.start();
     }
   }
@@ -26,10 +25,12 @@ public class ChatServer {
 class ServerThread extends Thread {
 
   private Mailbox mailbox;
+  private Broadcaster broadcaster;
   private Socket socket;
 
-  public ServerThread(Mailbox mailbox, Socket socket) {
+  public ServerThread(Mailbox mailbox, Broadcaster broadcaster, Socket socket) {
     this.mailbox = mailbox;
+    this.broadcaster = broadcaster;
     this.socket = socket;
   }
 
@@ -37,12 +38,18 @@ class ServerThread extends Thread {
   public void run() {
     try {
       System.out.println("Client connected: " + socket.getInetAddress());
+      broadcaster.add(socket);
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       OutputStream out = socket.getOutputStream();
 
       while (!socket.isClosed()) {
         try {
-          String input = in.readLine() + " ";
+          String input = in.readLine();
+          if (input == null) {
+            socket.close();
+            break;
+          }
+          input += " ";
           char command = input.split(":")[0].trim().charAt(0);
           String message = input.split(":")[1].trim();
           System.out.println("Client: " + message);
@@ -54,7 +61,7 @@ class ServerThread extends Thread {
               out.write((message + "\n").getBytes());
               break;
             case 'Q':
-              System.out.println("Client disconnected: " + socket.getInetAddress());
+              socket.close();
               break;
             default:
               throw new IllegalArgumentException("Client incorrect command: " + command);
@@ -65,11 +72,12 @@ class ServerThread extends Thread {
         }
       }
 
-      socket.close();
       in.close();
       out.close();
+      broadcaster.remove(socket);
+      System.out.println("Client disconnected: " + socket.getInetAddress());
     } catch (IOException | InterruptedException e) {
-      System.out.println(e.getCause() + ": " + e.getMessage());
+      e.printStackTrace();
     }
   }
 }
