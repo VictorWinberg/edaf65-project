@@ -5,4 +5,5 @@ public interface Square {
 	public void setXY(int x,int y);
 	public int getXPosition();
 	public int getYPosition();
+	public String getColor();
 }

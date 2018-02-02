@@ -41,7 +41,12 @@ public class Number implements Square {
 		return y;
 	}
 
-	@Override
+    @Override
+    public String getColor() {
+        return null;
+    }
+
+    @Override
 	public void setXY(int x, int y) {
 		this.x=x;
 		this.y=y;

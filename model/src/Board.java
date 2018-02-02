@@ -3,4 +3,6 @@ public interface Board {
     public void setFlag(int x, int y);
     public void pick(int x, int y);
     public Board makeHiddenBoard();
+    public void turnUp(int x, int y);
+
 }
