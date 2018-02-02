@@ -5,8 +5,9 @@ public class Number implements Square {
 	int x;
 	int y;
 
-	public Number() {
+	public Number(int number) {
 		visible = false;
+		this.number=number;
 	}
 
 	public void setNumber(int number) {
