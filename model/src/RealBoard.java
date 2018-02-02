@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RealBoard implements Board {
+
     Square[][] field;
     int size;
     int bombs;
@@ -57,4 +58,22 @@ public class RealBoard implements Board {
         field[x][y].pick();
     }
 
+    public Board makeHiddenBoard() {
+        RealBoard hidden = new RealBoard(size, bombs);
+        Square[][] list = new Square[size][size];
+        Square temp;
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                if (field[x][y].isVisible()) {
+                    temp = field[x][y];
+                } else {
+                    temp = new Hidden();
+                    temp.setXY(x, y);
+                }
+                list[x][y] = temp;
+            }
+        }
+        hidden.field = list;
+        return hidden;
+    }
 }
