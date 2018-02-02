@@ -8,8 +8,9 @@ public class RealBoard implements Board {
 	}
 
 	public Board makeBoard(Square[][] squares) {
-		field=squares;
-		return this;
+		RealBoard newBoard = new RealBoard(size);
+		newBoard.field=squares;
+		return newBoard;
 	}
 
 	@Override
@@ -36,7 +37,8 @@ public class RealBoard implements Board {
 				if (field[x][y].isVisible()) {
 					temp = field[x][y];
 				} else {
-					temp = new Empty();
+					temp = new Hidden();
+					temp.setXY(x, y);
 				}
 				list[x][y] = temp;
 			}
