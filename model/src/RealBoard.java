@@ -23,10 +23,6 @@ public class RealBoard implements Board {
 
 	}
 
-	@Override
-	public void turnUp(int x, int y) {
-		field[x][y].pick();
-	}
 
 	public Board makeHiddenBoard() {
 		RealBoard hidden = new RealBoard(size);
@@ -44,5 +40,11 @@ public class RealBoard implements Board {
 			}
 		}
 		return hidden.makeBoard(list);
+	}
+
+	@Override
+	public void pick(int x, int y) {
+		field[x][y].pick();
+		
 	}
 }
