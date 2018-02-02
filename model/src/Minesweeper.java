@@ -4,13 +4,12 @@ public class Minesweeper {
     private RealBoard board;
 
     public Minesweeper() {
-        board = new RealBoard(9);
-        board.placeRandomBombs(10);
+        board = new RealBoard(9, 10);
     }
 
     public Board pick(int x, int y) {
         if (board.isBomb(x, y)) {
-            return new LoserBoard(x,y);
+            return board;
         }
         board.pick(x,y);
         return board.makeHiddenBoard();
