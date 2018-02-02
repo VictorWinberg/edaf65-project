@@ -1,19 +1,26 @@
 public class LoserBoard implements Board {
-    public LoserBoard(int x, int y) {
-    }
-
     @Override
-    public boolean isBomb(int x, int y) {
+    public boolean isBomb(Point p) {
         return false;
     }
 
     @Override
-    public void setFlag(int x, int y) {
+    public void setFlag(Point p) {
 
     }
 
     @Override
-    public void turnUp(int x, int y) {
+    public void pick(Point p) {
+
+    }
+
+    @Override
+    public Board makeHiddenBoard() {
+        return null;
+    }
+
+    @Override
+    public void turnUp(Point p) {
 
     }
 }

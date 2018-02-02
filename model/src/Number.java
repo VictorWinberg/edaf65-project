@@ -1,56 +1,36 @@
+import java.awt.*;
 
 public class Number implements Square {
-	int number;
-	boolean visible;
-	int x;
-	int y;
+    private int number;
+    private boolean visible;
 
-	public Number(int number) {
-		visible = false;
-		this.number=number;
-	}
+    public Number(int number) {
+        visible = false;
+        this.number = number;
+    }
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
-
-	@Override
-	public int pick() {
-		visible = true;
-		return number;
-	}
-
-	@Override
-	public int check() {
-		return number;
-	}
-
-	@Override
-	public boolean isVisible() {
-		return visible;
-	}
-
-	@Override
-	public int getXPosition() {
-	
-		return x;
-	}
-
-	@Override
-	public int getYPosition() {
-		return y;
-	}
-
-    @Override
-    public String getColor() {
-        return null;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     @Override
-	public void setXY(int x, int y) {
-		this.x=x;
-		this.y=y;
-		
-	}
+    public int pick() {
+        visible = true;
+        return number;
+    }
 
+    @Override
+    public int check() {
+        return number;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return visible;
+    }
+
+    @Override
+    public Color getColor() {
+        return null;
+    }
 }
