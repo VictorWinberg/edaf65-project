@@ -39,7 +39,8 @@ public class RealBoard implements Board {
 				list[x][y] = temp;
 			}
 		}
-		return hidden.makeBoard(list);
+		hidden.field=list;
+		return hidden;
 	}
 
 	@Override
