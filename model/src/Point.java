@@ -11,4 +11,9 @@ public class Point {
 	public int getY(){
 		return y;
 	}
+
+	@Override
+	public int hashCode() {
+		return Integer.valueOf(String.valueOf(x) + String.valueOf(y));
+	}
 }

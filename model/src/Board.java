@@ -1,8 +1,8 @@
 public interface Board {
-    public boolean isBomb(int x, int y);
-    public void setFlag(int x, int y);
-    public void pick(int x, int y);
+    public boolean isBomb(Point p);
+    public void setFlag(Point p);
+    public void pick(Point p);
     public Board makeHiddenBoard();
-    public void turnUp(int x, int y);
+    public void turnUp(Point p);
 
 }
