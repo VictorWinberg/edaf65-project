@@ -1,19 +1,16 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class RealBoard implements Board {
     Square[][] field;
     int size;
+    int bombs;
 
     public RealBoard(int size, int bombs) {
         field = new Square[size][size];
         this.size = size;
+        this.bombs = bombs;
         fillAndAddBombs(bombs);
-    }
-
-    public Board makeBoard(Square[][] squares) {
-        RealBoard newBoard = new RealBoard(size);
-        newBoard.field=squares;
-        return newBoard;
     }
 
     private void fillAndAddBombs(int bombs) {
@@ -35,7 +32,7 @@ public class RealBoard implements Board {
 
     private int countNeighbourBombs(int x, int y) {
         List<Integer> neigbours = new ArrayList<>();
-        
+
         return 0;
     }
 
@@ -60,21 +57,4 @@ public class RealBoard implements Board {
         field[x][y].pick();
     }
 
-	public Board makeHiddenBoard() {
-		RealBoard hidden = new RealBoard(size);
-		Square[][] list = new Square[size][size];
-		Square temp;
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
-				if (field[x][y].isVisible()) {
-					temp = field[x][y];
-				} else {
-					temp = new Hidden();
-					temp.setXY(x, y);
-				}
-				list[x][y] = temp;
-			}
-		}
-		return hidden.makeBoard(list);
-	}
 }
