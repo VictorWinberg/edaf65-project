@@ -1,9 +1,8 @@
+import java.awt.*;
+
 public interface Square {
-	public int pick();
-	public int check();
-	public boolean isVisible();
-	public void setXY(int x,int y);
-	public int getXPosition();
-	public int getYPosition();
-	public String getColor();
+    public int pick();
+    public int check();
+    public boolean isVisible();
+    public Color getColor();
 }
