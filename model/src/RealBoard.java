@@ -30,7 +30,7 @@ public class RealBoard implements Board {
         }
     }
 
-    private int countNeighbourBombs(int x, int y) {
+    private int countNeighbourBombs(Point p) {
         List<Point> neigbours = getNeighbourPoints();
 
 
@@ -50,33 +50,35 @@ public class RealBoard implements Board {
 
     @Override
     public void pick(Point p) {
-        field[x][y].pick();
-        List<Point> neighbours = getNeighbourPoints(x,y);
+        field.get(p).pick();
+        List<Point> neighbours = getNeighbourPoints(p);
         for(Point nei : neighbours){
-            if(field[nei] == 0){
+            if(field.get(nei).check() == 0){
 
             }
         }
     }
 
     @Override
-    public void turnUp(int x, int y) {
-        field[x][y].pick();
+    public void turnUp(Point p) {
+        field.get(p).pick();
     }
 
     public Board makeHiddenBoard() {
         RealBoard hidden = new RealBoard(size, bombs);
-        Square[][] list = new Square[size][size];
-        Square temp;
+        HashMap<Point, Square> list = new HashMap<>();
+        Square currentSquare;
+        Point p;
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                if (field[x][y].isVisible()) {
-                    temp = field[x][y];
+                p = new Point(x,y);
+                if (field.get(p).isVisible()) {
+                    currentSquare = field.get(p);
                 } else {
-                    temp = new Hidden();
-                    temp.setXY(x, y);
+                    currentSquare = new Hidden();
+                    currentSquare.setXY(x, y);
                 }
-                list[x][y] = temp;
+                list.put(p, currentSquare);
             }
         }
         hidden.field = list;
