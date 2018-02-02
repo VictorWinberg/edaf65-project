@@ -1,5 +1,3 @@
-import javax.swing.text.html.MinimalHTMLWriter;
-
 public class Minesweeper {
     private RealBoard board;
 
