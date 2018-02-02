@@ -1,21 +1,44 @@
 
-public class Empty implements Square{
+public class Empty implements Square {
 	boolean visible;
-	public Empty(){
-		visible=false;
+	int x;
+	int y;
+
+	public Empty() {
+		visible = false;
 	}
+
 	@Override
 	public int pick() {
-		visible=true;
+		visible = true;
 		return 0;
 	}
+
 	@Override
 	public int check() {
 		return 0;
 	}
+
 	@Override
 	public boolean isVisible() {
-		// TODO Auto-generated method stub
 		return visible;
+	}
+
+	@Override
+	public int getXPosition() {
+
+		return 0;
+	}
+
+	@Override
+	public int getYPosition() {
+
+		return 0;
+	}
+
+	@Override
+	public void setXY(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 }
