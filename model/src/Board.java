@@ -3,5 +3,4 @@ public interface Board {
     void setFlag(Point p);
     void pick(Point p);
     Board makeHiddenBoard();
-    void turnUp(Point p);
 }

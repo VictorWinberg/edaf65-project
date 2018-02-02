@@ -16,10 +16,11 @@ public class RealBoard implements Board {
 
     private void fillAndAddBombs(int bombs) {
         Point p;
+        int num;
         while (bombs > 0) {
             p = new Point((int) (Math.random() * size), (int) (Math.random() * size));
             if (field.get(p) == null) {
-                field.put(p, new Bomb());
+                field.put(p, new BombSquare());
                 bombs--;
             }
         }
@@ -27,7 +28,8 @@ public class RealBoard implements Board {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 p = new Point(i, j);
-                field.put(p, new Number(countNeighbourBombs(p)));
+                num = countNeighbourBombs(p);
+                field.put(p, num == 0 ? new EmptySquare() : new NumberSquare(num));
             }
         }
     }
@@ -56,7 +58,7 @@ public class RealBoard implements Board {
 
     @Override
     public void pick(Point p) {
-        field.get(p).pick();
+        field.get(p).makeVisible();
         List<Point> neighbours = getNeighbourPoints(p);
         for (Point nei : neighbours) {
             if (field.get(nei).check() == 0) {
@@ -68,17 +70,12 @@ public class RealBoard implements Board {
     private List<Point> getNeighbourPoints(Point p) {
         List<Point> allNeighbours = p.getNeighbours();
         List<Point> realNeighBours = new ArrayList<>();
-        for(Point nei : allNeighbours){
-            if(p.insideSquare(size)){
+        for (Point nei : allNeighbours) {
+            if (p.insideSquare(size)) {
                 realNeighBours.add(p);
             }
         }
         return realNeighBours;
-    }
-
-    @Override
-    public void turnUp(Point p) {
-        field.get(p).pick();
     }
 
     public Board makeHiddenBoard() {
@@ -91,7 +88,7 @@ public class RealBoard implements Board {
                 if (field.get(p).isVisible()) {
                     list.put(p, field.get(p));
                 } else {
-                    list.put(p, new Hidden());
+                    list.put(p, new HiddenSquare());
                 }
             }
         }

@@ -1,21 +1,22 @@
 import java.awt.*;
 
-public class Empty implements Square {
-    boolean visible;
+public class NumberSquare implements Square {
+    private int number;
+    private boolean visible;
 
-    public Empty() {
+    public NumberSquare(int number) {
         visible = false;
+        this.number = number;
     }
 
     @Override
-    public int pick() {
+    public void makeVisible() {
         visible = true;
-        return 0;
     }
 
     @Override
     public int check() {
-        return 0;
+        return number;
     }
 
     @Override

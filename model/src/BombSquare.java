@@ -1,27 +1,20 @@
 import java.awt.*;
 
-public class Number implements Square {
-    private int number;
+public class BombSquare implements Square {
     private boolean visible;
 
-    public Number(int number) {
+    public BombSquare() {
         visible = false;
-        this.number = number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     @Override
-    public int pick() {
+    public void makeVisible() {
         visible = true;
-        return number;
     }
 
     @Override
     public int check() {
-        return number;
+        return -1;
     }
 
     @Override
@@ -29,7 +22,6 @@ public class Number implements Square {
         return visible;
     }
 
-    @Override
     public Color getColor() {
         return null;
     }
