@@ -34,13 +34,29 @@ class ServerThread extends Thread {
     this.socket = socket;
   }
 
+  private String welcome(Socket socket, BufferedReader in, OutputStream out) throws IOException {
+    out.write(("Server: Welcome! Please enter your username:" + "\n").getBytes());
+    while (!socket.isClosed()) {
+      String input = in.readLine();
+      if (input.matches("^[a-zA-Z0-9_]{3,14}$")) {
+        out.write(("Server: Hi " + input + " use /help to see the server commands.\n").getBytes());
+        return input;
+      } else {
+        out.write(("Server: Please only use alphanumeric values with underscore between 3 and 14 values.\n").getBytes());
+      }
+    }
+    return null;
+  }
+
   @Override
   public void run() {
     try {
       System.out.println("Client connected: " + socket.getInetAddress());
-      broadcaster.add(socket);
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       OutputStream out = socket.getOutputStream();
+      String username = welcome(socket, in, out);
+      User user = new User(username, socket);
+      broadcaster.add(user);
 
       while (!socket.isClosed()) {
         try {
@@ -50,17 +66,20 @@ class ServerThread extends Thread {
             break;
           }
           input += " ";
-          char command = input.split(":")[0].trim().charAt(0);
-          String message = input.split(":")[1].trim();
+          String command = input.split(" ", 2)[0].trim();
+          String message = input.split(" ", 2)[1].trim();
           System.out.println("Client: " + message);
           switch (command) {
-            case 'M':
-              mailbox.set(message);
+            case "/help":
+              out.write(("Server: Available commands: /help, /all, /echo, /quit\n").getBytes());
               break;
-            case 'E':
-              out.write((message + "\n").getBytes());
+            case "/all":
+              mailbox.set(new Message(user, message));
               break;
-            case 'Q':
+            case "/echo":
+              out.write(("Server: " + message + "\n").getBytes());
+              break;
+            case "/quit":
               socket.close();
               break;
             default:
@@ -68,13 +87,13 @@ class ServerThread extends Thread {
           }
         } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
           System.out.println("Client incorrect command");
-          out.write("Incorrect command, use \"M: <message>\", \"E: <message>\" or \"Q:\".\n".getBytes());
+          out.write("Server: Incorrect command, use \"M: <message>\", \"E: <message>\" or \"Q:\".\n".getBytes());
         }
       }
 
       in.close();
       out.close();
-      broadcaster.remove(socket);
+      broadcaster.remove(user);
       System.out.println("Client disconnected: " + socket.getInetAddress());
     } catch (IOException | InterruptedException e) {
       e.printStackTrace();

@@ -2,27 +2,34 @@ package server;
 
 public class Mailbox {
   
-  private String value;
+  private Message msg;
   
-  public Mailbox() {
-    value = "Initialized";
-  }
-  
-  public synchronized void set(String value) throws InterruptedException {
-    while(this.value != null) {
+  public synchronized void set(Message msg) throws InterruptedException {
+    while(this.msg != null) {
       wait();
     }
-    this.value = value;
+    this.msg = msg;
     notifyAll();
   }
   
-  public synchronized String get() throws InterruptedException {
-    while(value == null) {
+  public synchronized Message get() throws InterruptedException {
+    while(msg == null) {
       wait();
     }
-    String temp = value;
-    value = null;
+    Message temp = msg;
+    msg = null;
     notifyAll();
     return temp;
+  }
+}
+
+class Message {
+
+  public final User user;
+  public final String message;
+
+  public Message(User user, String message) {
+    this.user = user;
+    this.message = message;
   }
 }

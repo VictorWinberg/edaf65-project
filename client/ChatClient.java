@@ -68,7 +68,7 @@ class ClientReceiveThread extends Thread {
           socket.close();
           break;
         }
-        System.out.println("Server: " + response);
+        System.out.println(response);
       }
 
       socket.close();
