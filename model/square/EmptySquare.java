@@ -1,11 +1,11 @@
-package model;
+package model.square;
 
 import java.awt.*;
 
-public class BombSquare implements Square {
+public class EmptySquare implements Square {
     private boolean visible;
 
-    public BombSquare() {
+    public EmptySquare() {
         visible = false;
     }
 
@@ -16,7 +16,7 @@ public class BombSquare implements Square {
 
     @Override
     public int check() {
-        return -1;
+        return 0;
     }
 
     @Override
@@ -24,6 +24,7 @@ public class BombSquare implements Square {
         return visible;
     }
 
+    @Override
     public Color getColor() {
         return null;
     }

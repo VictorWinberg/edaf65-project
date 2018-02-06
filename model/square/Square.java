@@ -1,4 +1,4 @@
-package model;
+package model.square;
 
 import java.awt.*;
 
