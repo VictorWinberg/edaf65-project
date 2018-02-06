@@ -8,7 +8,7 @@ public class Minesweeper {
     }
 
     public Board pick(int x, int y) {
-        Point p = new Point(x,y);
+        Point p = new Point(x, y);
         if (board.isBomb(p)) {
             return board;
         }
@@ -17,16 +17,16 @@ public class Minesweeper {
     }
 
     public Board flag(int x, int y) {
-        Point p = new Point(x,y);
+        Point p = new Point(x, y);
         board.setFlag(p);
         return board.makeHiddenBoard();
     }
 
-    public Board getInitialBoard(){
+    public Board getInitialBoard() {
         return board.makeHiddenBoard();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Minesweeper m = new Minesweeper();
     }
 }

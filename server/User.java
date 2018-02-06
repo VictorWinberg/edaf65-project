@@ -1,6 +1,7 @@
 package server;
 
 import java.net.Socket;
+
 import org.java_websocket.WebSocket;
 
 public class User {
@@ -24,7 +25,7 @@ public class User {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
-            User other = (User)obj;
+            User other = (User) obj;
             if (socket != null) {
                 return socket == other.socket;
             } else if (webSocket != null) {
