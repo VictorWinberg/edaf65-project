@@ -1,0 +1,16 @@
+{
+  "name": "edaf65-project",
+  "version": "1.0.0",
+  "description": "Nätverksprogrammering Projekt",
+  "main": "node",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VictorWinberg/edaf65-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/VictorWinberg/edaf65-project#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
