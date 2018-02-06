@@ -7,11 +7,11 @@ import java.util.*;
 public class Broadcaster extends Thread {
 
   private Mailbox mailbox;
-  private List<User> users;
+  private Set<User> users;
   
   public Broadcaster(Mailbox mailbox) {
     this.mailbox = mailbox;
-    users = new ArrayList<User>();
+    users = new HashSet<>();
   }
 
   public synchronized void add(User user) {

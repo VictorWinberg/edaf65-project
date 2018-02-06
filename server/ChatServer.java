@@ -8,6 +8,8 @@ public class ChatServer {
   public static void main(String args[]) throws IOException {
     int port = Integer.parseInt(args[0]);
 
+    new WebServer(port + 1).start();
+
     Mailbox mailbox = new Mailbox();
     Broadcaster broadcaster = new Broadcaster(mailbox);
     broadcaster.start();
@@ -38,7 +40,9 @@ class ServerThread extends Thread {
     out.write(("Server: Welcome! Please enter your username:" + "\n").getBytes());
     while (!socket.isClosed()) {
       String input = in.readLine();
-      if (input.matches("^[a-zA-Z0-9_]{3,14}$")) {
+      if (input == null) {
+        socket.close();
+      } else if (input.matches("^[a-zA-Z0-9_]{3,14}$")) {
         out.write(("Server: Hi " + input + " use /help to see the server commands.\n").getBytes());
         return input;
       } else {
@@ -83,11 +87,11 @@ class ServerThread extends Thread {
               socket.close();
               break;
             default:
-              throw new IllegalArgumentException("Client incorrect command: " + command);
+              throw new IllegalArgumentException();
           }
         } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
           System.out.println("Client incorrect command");
-          out.write("Server: Incorrect command, use \"M: <message>\", \"E: <message>\" or \"Q:\".\n".getBytes());
+          out.write("Server: Incorrect command, use /help to see the server commands.\n".getBytes());
         }
       }
 
