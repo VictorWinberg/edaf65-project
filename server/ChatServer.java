@@ -8,8 +8,6 @@ public class ChatServer {
     public static void main(String args[]) throws IOException {
         int port = Integer.parseInt(args[0]);
 
-        new WebServer(port + 1).start();
-
         Mailbox mailbox = new Mailbox();
         Broadcaster broadcaster = new Broadcaster(mailbox);
         broadcaster.start();
