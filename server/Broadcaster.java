@@ -22,6 +22,10 @@ public class Broadcaster extends Thread {
         users.remove(user);
     }
 
+    public synchronized Set<User> getUsers() {
+        return users;
+    }
+
     @Override
     public void run() {
         while (true) {

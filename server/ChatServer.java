@@ -2,6 +2,7 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import java.util.stream.*;
 
 public class ChatServer {
 
@@ -73,7 +74,7 @@ class ServerThread extends Thread {
                     System.out.println("Client: " + message);
                     switch (command) {
                         case "/help":
-                            out.write(("Server: Available commands: /help, /all, /echo, /quit\n").getBytes());
+                            out.write(("Server: Available commands: /help, /all, /echo, /show, /quit\n").getBytes());
                             break;
                         case "/all":
                             mailbox.set(new Message(user, message));
@@ -83,6 +84,11 @@ class ServerThread extends Thread {
                             break;
                         case "/quit":
                             socket.close();
+                            break;
+                        case "/show":
+                            String users = broadcaster.getUsers().stream()
+                                    .map(Object::toString).collect(Collectors.joining(","));
+                            out.write(("Server: Online Users - " + users + "\n").getBytes());
                             break;
                         default:
                             throw new IllegalArgumentException();
