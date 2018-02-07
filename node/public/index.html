@@ -2,46 +2,23 @@
 <html>
   <head>
     <title>SocketChat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="#">
-      <input id="m" autocomplete="off"/><button>Send</button>
-    </form>
-    <script>
-      const conn = new WebSocket(`${location.protocol === "http:" ? "ws" : "wss"}://${location.host}/websocket`)
+    <div id="page-wrapper">
+      <h1>SocketChat</h1>
 
-      conn.onopen = function () {
-        console.log('Connected!')
-      }
+      <div id="status">Connecting...</div>
 
-      conn.onerror = function (error) {
-        console.log('WebSocket Error ' + error)
-      }
+      <ul id="messages"></ul>
 
-      conn.onmessage = function (e) {
-        var ul = document.getElementById('messages');
-        var li = document.createElement('li');
-        li.appendChild(document.createTextNode(e.data));
-        ul.appendChild(li);
-      }
-      
-      document.forms[0].addEventListener("submit", function(e) {
-        e.preventDefault()
-        var msg = document.getElementById('m').value
-        document.getElementById('m').value = ""
-        conn.send(msg)
-      })
-    </script>
+      <form id="message-form" action="#" method="post">
+        <input id="message" placeholder="Write your message here..." autocomplete="off" required></input>
+        <button type="submit">Send Message</button>
+        <button type="button" id="close">Close Connection</button>
+      </form>
+    </div>
+    <script src="script.js"></script>
   </body>
 </html>
