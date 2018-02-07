@@ -19,7 +19,7 @@
       <input id="m" autocomplete="off"/><button>Send</button>
     </form>
     <script>
-      const conn = new WebSocket(`${location.protocol === "http:" ? "ws" : "wss"}://${location.hostname}:1338`)
+      const conn = new WebSocket(`${location.protocol === "http:" ? "ws" : "wss"}://${location.host}/websocket`)
 
       conn.onopen = function () {
         console.log('Connected!')

@@ -11,6 +11,7 @@
   "license": "ISC",
   "homepage": "https://github.com/VictorWinberg/edaf65-project#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "ws": "^4.0.0"
   }
 }
