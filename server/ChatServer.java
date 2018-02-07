@@ -87,7 +87,7 @@ class ServerThread extends Thread {
                             break;
                         case "/show":
                             String users = broadcaster.getUsers().stream()
-                                    .map(Object::toString).collect(Collectors.joining(","));
+                                    .map(Object::toString).collect(Collectors.joining(", "));
                             out.write(("Server: Online Users - " + users + "\n").getBytes());
                             break;
                         default:
