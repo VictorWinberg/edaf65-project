@@ -77,7 +77,7 @@ class ServerExchange extends Thread {
                     System.out.println("Client: " + message);
                     switch (command) {
                         case "/help":
-                            out.write(("Server: Available commands: /help, /all, /echo, /show, /play, /quit\n").getBytes());
+                            out.write(("Server: Available commands: /help, /all, /echo, /show, /play [size] [bombs], /quit\n").getBytes());
                             break;
                         case "/all":
                             mailbox.set(new Message(user, message));
@@ -97,14 +97,13 @@ class ServerExchange extends Thread {
                             int size = Integer.parseInt(message.split(" ", 2)[0]);
                             int bombs = Integer.parseInt(message.split(" ", 2)[1]);
                             minesweeper = new Minesweeper(size, bombs);
-                            out.write(("Game started!\n" + minesweeper.toString() + "\n").getBytes());
+                            out.write(("Game started!\n  Commands: /pick [x] [y], /flag [x] [y]\n" + minesweeper.toString() + "\n").getBytes());
                             break;
                         }
                         case "/pick": {
                             int x = Integer.parseInt(message.split(" ", 2)[0]);
                             int y = Integer.parseInt(message.split(" ", 2)[1]);
-                            minesweeper.pick(x - 1, y - 1);
-                            out.write(("Picked position (" + x + ", " + y + ")\n" + minesweeper.toString() + "\n").getBytes());
+                            out.write(("Picked position (" + x + ", " + y + ")\n" + minesweeper.pick(x - 1, y - 1) + "\n").getBytes());
                             break;
                         }
                         case "/flag": {
@@ -117,9 +116,12 @@ class ServerExchange extends Thread {
                         default:
                             throw new IllegalArgumentException();
                     }
-                } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     System.out.println("Client incorrect command");
                     out.write("Server: Incorrect command, use /help to see the server commands.\n".getBytes());
+                } catch (ArrayIndexOutOfBoundsException a) {
+                    System.out.println("Client incorrect command");
+                    System.out.println("Missing arguments!");
                 }
             }
 

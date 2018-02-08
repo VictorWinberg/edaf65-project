@@ -68,6 +68,15 @@ public class RealBoard implements Board {
         showNearbyZeros(p, visited);
     }
 
+    public boolean gameIsBeat() {
+        for (Square sq : field.values()) {
+            if (sq.check() > 0 && !sq.isVisible()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void showNearbyZeros(Point p, Set<Point> visited) {
         if (!visited.contains(p)) {
             visited.add(p);

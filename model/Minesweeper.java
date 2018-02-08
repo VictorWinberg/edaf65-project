@@ -7,16 +7,19 @@ public class Minesweeper {
         board = new RealBoard(size, bombs);
     }
 
-    public int[][] pick(int x, int y) {
+    public String pick(int x, int y) {
         Point p = new Point(x, y);
-        if(board.isVisible(p)){
-            return null;
+        if (board.isVisible(p)) {
+            return "ILLEGAL MOVE";
         }
         if (board.isBomb(p)) {
-            return board.readable();
+            return "YOU LOSE \n" + board + "\n YOU LOSE";
         }
         board.pick(p);
-        return board.makeHiddenBoard().readable();
+        if (board.gameIsBeat()) {
+            return "YOU WIN U ARE AMAAAAZING. WOOOOOOOOW. really. you did it.";
+        }
+        return board.makeHiddenBoard().toString();
     }
 
     public int[][] flag(int x, int y) {
@@ -29,7 +32,7 @@ public class Minesweeper {
         return board.makeHiddenBoard().readable();
     }
 
-    public String toString(){
+    public String toString() {
         return board.makeHiddenBoard().toString();
     }
 }
