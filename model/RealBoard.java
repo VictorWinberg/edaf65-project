@@ -118,8 +118,8 @@ public class RealBoard implements Board {
 
     public String toString() {
         StringBuilder bob = new StringBuilder();
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 Point p = new Point(x, y);
                 if (field.get(p) != null) {
                     if (field.get(p).check() < 0) {

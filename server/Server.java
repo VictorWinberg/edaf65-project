@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.stream.*;
 
+import model.Minesweeper;
+
 public class Server {
 
     public static void main(String args[]) throws IOException {
@@ -25,6 +27,7 @@ public class Server {
 
 class ServerExchange extends Thread {
 
+    private Minesweeper minesweeper;
     private Mailbox mailbox;
     private Broadcaster broadcaster;
     private Socket socket;
@@ -90,6 +93,27 @@ class ServerExchange extends Thread {
                                     .map(Object::toString).collect(Collectors.joining(", "));
                             out.write(("Server: Online Users - " + users + "\n").getBytes());
                             break;
+                        case "/start": {
+                            int size = Integer.parseInt(message.split(" ", 2)[0]);
+                            int bombs = Integer.parseInt(message.split(" ", 2)[1]);
+                            minesweeper = new Minesweeper(size, bombs);
+                            out.write(minesweeper.toString().getBytes());
+                            break;
+                        }
+                        case "/pick": {
+                            int x = Integer.parseInt(message.split(" ", 2)[0]);
+                            int y = Integer.parseInt(message.split(" ", 2)[1]);
+                            minesweeper.pick(x - 1, y - 1);
+                            out.write((minesweeper.toString() + "\n").getBytes());
+                            break;
+                        }
+                        case "/flag": {
+                            int x = Integer.parseInt(message.split(" ", 2)[0]);
+                            int y = Integer.parseInt(message.split(" ", 2)[1]);
+                            minesweeper.flag(x - 1, y - 1);
+                            out.write((minesweeper.toString() + "\n").getBytes());
+                            break;
+                        }
                         default:
                             throw new IllegalArgumentException();
                     }
