@@ -30,6 +30,6 @@ public class Minesweeper {
     }
 
     public String toString(){
-        return board.toString();
+        return board.makeHiddenBoard().toString();
     }
 }
