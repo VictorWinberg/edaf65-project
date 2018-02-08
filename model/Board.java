@@ -9,7 +9,7 @@ public interface Board {
 
     Board makeHiddenBoard();
 
-    void print();
+    String toString();
 
     boolean isVisible(Point p);
 

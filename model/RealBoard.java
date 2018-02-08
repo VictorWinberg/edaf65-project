@@ -116,23 +116,24 @@ public class RealBoard implements Board {
         return hidden;
     }
 
-    public void print() {
+    public String toString() {
+        StringBuilder bob = new StringBuilder();
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 Point p = new Point(x, y);
                 if (field.get(p) != null) {
-                    if ((field.get(p).check() == -1) || (field.get(p).check() == -2)) {
-                        System.out.print(" " + field.get(p).check() + " ");
+                    if (field.get(p).check() < 0) {
+                        bob.append(" " + field.get(p).check() + " ");
                     } else {
-                        System.out.print("  " + field.get(p).check() + " ");
+                        bob.append("  " + field.get(p).check() + " ");
                     }
                 } else {
-                    System.out.print("  0 ");
+                    bob.append("  0 ");
                 }
             }
-            System.out.println();
+            bob.append("\n");
         }
-        System.out.println();
+        return bob.toString();
     }
 
     public boolean isVisible(Point p) {
