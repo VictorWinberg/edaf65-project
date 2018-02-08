@@ -3,26 +3,26 @@ package client;
 import java.io.*;
 import java.net.*;
 
-public class ChatClient {
+public class Client {
     public static void main(String args[]) throws Exception {
         String machine = args[0];
         int port = Integer.parseInt(args[1]);
 
         Socket socket = new Socket(machine, port);
 
-        ClientSendThread send = new ClientSendThread(socket);
+        ClientSend send = new ClientSend(socket);
         send.start();
 
-        ClientReceiveThread receive = new ClientReceiveThread(socket);
+        ClientReceive receive = new ClientReceive(socket);
         receive.start();
     }
 }
 
-class ClientSendThread extends Thread {
+class ClientSend extends Thread {
 
     private Socket socket;
 
-    public ClientSendThread(Socket socket) {
+    public ClientSend(Socket socket) {
         this.socket = socket;
     }
 
@@ -49,11 +49,11 @@ class ClientSendThread extends Thread {
     }
 }
 
-class ClientReceiveThread extends Thread {
+class ClientReceive extends Thread {
 
     private Socket socket;
 
-    public ClientReceiveThread(Socket socket) {
+    public ClientReceive(Socket socket) {
         this.socket = socket;
     }
 

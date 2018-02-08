@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.stream.*;
 
-public class ChatServer {
+public class Server {
 
     public static void main(String args[]) throws IOException {
         int port = Integer.parseInt(args[0]);
@@ -17,19 +17,19 @@ public class ChatServer {
 
         while (true) {
             Socket socket = serverSocket.accept();
-            ServerThread thread = new ServerThread(mailbox, broadcaster, socket);
+            ServerExchange thread = new ServerExchange(mailbox, broadcaster, socket);
             thread.start();
         }
     }
 }
 
-class ServerThread extends Thread {
+class ServerExchange extends Thread {
 
     private Mailbox mailbox;
     private Broadcaster broadcaster;
     private Socket socket;
 
-    public ServerThread(Mailbox mailbox, Broadcaster broadcaster, Socket socket) {
+    public ServerExchange(Mailbox mailbox, Broadcaster broadcaster, Socket socket) {
         this.mailbox = mailbox;
         this.broadcaster = broadcaster;
         this.socket = socket;
@@ -38,7 +38,7 @@ class ServerThread extends Thread {
     private String welcome(Socket socket, BufferedReader in, OutputStream out) throws IOException {
         out.write(("Server: Welcome! Please enter your username:" + "\n").getBytes());
         while (!socket.isClosed()) {
-            String input = in.readLine();
+            String input = in.readLine().trim();
             if (input == null) {
                 socket.close();
             } else if (input.matches("^[a-zA-Z0-9_]{3,14}$")) {
