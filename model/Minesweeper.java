@@ -28,4 +28,8 @@ public class Minesweeper {
     public int[][] getUserBoard() {
         return board.makeHiddenBoard().readable();
     }
+
+    public String toString(){
+        return board.toString();
+    }
 }
