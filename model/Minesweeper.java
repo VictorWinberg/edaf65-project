@@ -26,7 +26,9 @@ public class Minesweeper {
         return board.makeHiddenBoard();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         Minesweeper m = new Minesweeper();
+        System.out.println(m.board);
+        System.out.println(m.getInitialBoard());
     }
 }

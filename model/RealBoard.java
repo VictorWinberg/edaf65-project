@@ -39,10 +39,10 @@ public class RealBoard implements Board {
     }
 
     private int countNeighbourBombs(Point p) {
-        List<Point> neigbours = getNeighbourPoints(p);
+        List<Point> neighbours = getNeighbourPoints(p);
         int bombCount = 0;
-        for (Point nei : neigbours) {
-            if (field.get(nei).check() == -1) {
+        for (Point nei : neighbours) {
+            if (field.get(nei) != null && field.get(nei).check() == -1) {
                 bombCount++;
             }
         }
@@ -62,7 +62,14 @@ public class RealBoard implements Board {
 
     @Override
     public void pick(Point p) {
-        field.get(p).makeVisible();
+        Square square = field.get(p);
+        square.makeVisible();
+        if (square.check() == 0) {
+            showNearbyZeros(p);
+        }
+    }
+
+    private void showNearbyZeros(Point p) {
         List<Point> neighbours = getNeighbourPoints(p);
         for (Point nei : neighbours) {
             if (field.get(nei).check() == 0) {
@@ -98,5 +105,14 @@ public class RealBoard implements Board {
         }
         hidden.field = list;
         return hidden;
+    }
+
+    public void printBoard() {
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                Point p = new Point(x, y);
+                field.get(p);
+            }
+        }
     }
 }
