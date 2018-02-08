@@ -8,11 +8,13 @@ public class RealBoard implements Board {
     private HashMap<Point, Square> field;
     private int size;
     private int bombs;
+    private Set<Point> flagged;
 
     public RealBoard(int size, int bombs) {
         field = new HashMap<>(size * size);
         this.size = size;
         this.bombs = bombs;
+        flagged = new HashSet<>();
         fillAndAddBombs(bombs);
     }
 
@@ -57,7 +59,7 @@ public class RealBoard implements Board {
 
     @Override
     public void setFlag(Point p) {
-
+        flagged.add(p);
     }
 
     @Override
@@ -101,7 +103,12 @@ public class RealBoard implements Board {
                 if (field.get(p).isVisible()) {
                     list.put(p, field.get(p));
                 } else {
-                    list.put(p, new HiddenSquare());
+                    if (flagged.contains(p)) {
+                        list.put(p, new FlaggedSquare());
+                    } else {
+                        list.put(p, new HiddenSquare());
+
+                    }
                 }
             }
         }
