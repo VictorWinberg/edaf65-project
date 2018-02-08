@@ -127,4 +127,20 @@ public class RealBoard implements Board {
         }
         System.out.println();
     }
+
+    public boolean isVisible(Point p) {
+        return field.get(p).isVisible();
+    }
+
+    @Override
+    public int[][] readable() {
+        int[][] res = new int[size][size];
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                Point p = new Point(x, y);
+                res[x][y] = field.get(p).check();
+            }
+        }
+        return res;
+    }
 }

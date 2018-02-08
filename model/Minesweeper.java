@@ -9,6 +9,9 @@ public class Minesweeper {
 
     public Board pick(int x, int y) {
         Point p = new Point(x, y);
+        if(board.isVisible(p)){
+            return null;
+        }
         if (board.isBomb(p)) {
             return board;
         }
@@ -29,7 +32,8 @@ public class Minesweeper {
     public static void main(String[] args){
         Minesweeper m = new Minesweeper();
         for(int i = 0; i < 8; i++){
-            m.pick(i,1).print();
+        //    m.pick(i,0).print();
         }
+        m.board.readable();
     }
 }
