@@ -8,8 +8,12 @@ window.onload = function() {
   var closeBtn = document.getElementById('close');
 
   // Fix messagesList height
-  var offset = messagesList.offsetTop + form.offsetHeight + 80;
-  messagesList.style.height = "calc(100vh - " + offset + "px)";
+  var offset = messagesList.offsetTop + form.offsetHeight;
+  if (window.screen.width < 768) {
+    messagesList.style.height = "calc(100vh - " + offset + "px - 7em)";
+  } else {
+    messagesList.style.height = "calc(100vh - " + offset + "px - 4em)";
+  }
 
   // Create a new WebSocket.
   var wsurl = `${location.protocol === "http:" ? "ws" : "wss"}://${location.host}/websocket`;
@@ -28,7 +32,7 @@ window.onload = function() {
 
   // Handle messages sent by the server.
   ws.onmessage = function(event) {
-    var message = event.data;
+    var message = event.data.replace(/\n/g, "<br />");
     messagesList.innerHTML += '<li class="received"><span>Received:</span>' + message + '</li>';
     messagesList.scrollTop = Math.max(messagesList.scrollHeight, messagesList.scrollTop);
   };

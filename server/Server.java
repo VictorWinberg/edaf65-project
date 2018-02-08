@@ -39,13 +39,13 @@ class ServerExchange extends Thread {
     }
 
     private String welcome(Socket socket, BufferedReader in, OutputStream out) throws IOException {
-        out.write(("Server: Welcome! Please enter your username:" + "\n").getBytes());
+        out.write(("Server: Welcome!\nPlease enter your username:" + "\n").getBytes());
         while (!socket.isClosed()) {
             String input = in.readLine().trim();
             if (input == null) {
                 socket.close();
             } else if (input.matches("^[a-zA-Z0-9_]{3,14}$")) {
-                out.write(("Server: Hi " + input + " use /help to see the server commands.\n").getBytes());
+                out.write(("Server: Hi " + input + "\nHint: Use /help to see the server commands.\n").getBytes());
                 return input;
             } else {
                 out.write(("Server: Please only use alphanumeric values with underscore between 3 and 14 values.\n").getBytes());
@@ -77,7 +77,7 @@ class ServerExchange extends Thread {
                     System.out.println("Client: " + message);
                     switch (command) {
                         case "/help":
-                            out.write(("Server: Available commands: /help, /all, /echo, /show, /quit\n").getBytes());
+                            out.write(("Server: Available commands: /help, /all, /echo, /show, /play, /quit\n").getBytes());
                             break;
                         case "/all":
                             mailbox.set(new Message(user, message));
@@ -93,25 +93,25 @@ class ServerExchange extends Thread {
                                     .map(Object::toString).collect(Collectors.joining(", "));
                             out.write(("Server: Online Users - " + users + "\n").getBytes());
                             break;
-                        case "/start": {
+                        case "/play": {
                             int size = Integer.parseInt(message.split(" ", 2)[0]);
                             int bombs = Integer.parseInt(message.split(" ", 2)[1]);
                             minesweeper = new Minesweeper(size, bombs);
-                            out.write(minesweeper.toString().getBytes());
+                            out.write(("Game started!\n" + minesweeper.toString() + "\n").getBytes());
                             break;
                         }
                         case "/pick": {
                             int x = Integer.parseInt(message.split(" ", 2)[0]);
                             int y = Integer.parseInt(message.split(" ", 2)[1]);
                             minesweeper.pick(x - 1, y - 1);
-                            out.write((minesweeper.toString() + "\n").getBytes());
+                            out.write(("Picked position (" + x + ", " + y + ")\n" + minesweeper.toString() + "\n").getBytes());
                             break;
                         }
                         case "/flag": {
                             int x = Integer.parseInt(message.split(" ", 2)[0]);
                             int y = Integer.parseInt(message.split(" ", 2)[1]);
                             minesweeper.flag(x - 1, y - 1);
-                            out.write((minesweeper.toString() + "\n").getBytes());
+                            out.write(("Flagged position (\" + x + \", \" + y + \")\n" + minesweeper.toString() + "\n").getBytes());
                             break;
                         }
                         default:
