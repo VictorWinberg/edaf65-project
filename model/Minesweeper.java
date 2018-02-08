@@ -15,12 +15,14 @@ public class Minesweeper {
         if (board.isBomb(p)) {
             return board + "\nYOU LOSE #NICETRYBRO";
 
-            board.pick(p);
-            if (board.gameIsBeat()) {
-                return "YOU WIN U ARE AMAAAAZING. WOOOOOOOOW. really. you did it.";
-            }
-            return board.makeHiddenBoard().toString();
         }
+        board.pick(p);
+        
+        if (board.gameIsBeat()) {
+            return "YOU WIN U ARE AMAAAAZING. WOOOOOOOOW. really. you did it.";
+        }
+        return board.makeHiddenBoard().toString();
+
     }
 
     public int[][] flag(int x, int y) {
