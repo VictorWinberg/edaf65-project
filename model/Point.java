@@ -13,7 +13,7 @@ public class Point {
 
     @Override
     public int hashCode() {
-        return Integer.valueOf(String.valueOf(x) + String.valueOf(y));
+        return Integer.valueOf((String.valueOf(x) + String.valueOf(y)));
     }
 
     public List<Point> getNeighbours() {
@@ -28,8 +28,13 @@ public class Point {
         return neighbours;
     }
 
-    public boolean insideSquare(int size) {
-        return (x > 0 && x < size) && (y > 0 && y < size);
+    @Override
+    public boolean equals(Object obj) {
+        return this.hashCode() == obj.hashCode();
+    }
+
+    public boolean insideBoard(int size) {
+        return (x >= 0 && x < size) && (y >= 0 && y < size);
     }
 
     @Override

@@ -22,13 +22,14 @@ public class Minesweeper {
         return board.makeHiddenBoard();
     }
 
-    public Board getInitialBoard() {
+    public Board getUserBoard() {
         return board.makeHiddenBoard();
     }
 
     public static void main(String[] args){
         Minesweeper m = new Minesweeper();
-        System.out.println(m.board);
-        System.out.println(m.getInitialBoard());
+        for(int i = 0; i < 8; i++){
+            m.pick(i,1).print();
+        }
     }
 }

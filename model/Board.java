@@ -8,4 +8,6 @@ public interface Board {
     void pick(Point p);
 
     Board makeHiddenBoard();
+
+    void print();
 }

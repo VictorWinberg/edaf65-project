@@ -25,6 +25,6 @@ public class BombSquare implements Square {
     }
 
     public Color getColor() {
-        return null;
+        return Color.BLACK;
     }
 }

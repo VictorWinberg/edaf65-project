@@ -2,9 +2,7 @@ package model;
 
 import model.square.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class RealBoard implements Board {
     private HashMap<Point, Square> field;
@@ -32,8 +30,10 @@ public class RealBoard implements Board {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 p = new Point(i, j);
-                num = countNeighbourBombs(p);
-                field.put(p, num == 0 ? new EmptySquare() : new NumberSquare(num));
+                if (field.get(p) == null) {
+                    num = countNeighbourBombs(p);
+                    field.put(p, num == 0 ? new EmptySquare() : new NumberSquare(num));
+                }
             }
         }
     }
@@ -62,31 +62,33 @@ public class RealBoard implements Board {
 
     @Override
     public void pick(Point p) {
-        Square square = field.get(p);
-        square.makeVisible();
-        if (square.check() == 0) {
-            showNearbyZeros(p);
-        }
+        Set visited = new HashSet<Point>();
+        showNearbyZeros(p, visited);
     }
 
-    private void showNearbyZeros(Point p) {
-        List<Point> neighbours = getNeighbourPoints(p);
-        for (Point nei : neighbours) {
-            if (field.get(nei).check() == 0) {
-                pick(nei);
+    private void showNearbyZeros(Point p, Set<Point> visited) {
+        if (!visited.contains(p)) {
+            visited.add(p);
+            field.get(p).makeVisible();
+            if (field.get(p).check() == 0) {
+                List<Point> neighbours = getNeighbourPoints(p);
+                for (Point nei : neighbours) {
+                    field.get(p).makeVisible();
+                    showNearbyZeros(nei, visited);
+                }
             }
         }
     }
 
     private List<Point> getNeighbourPoints(Point p) {
         List<Point> allNeighbours = p.getNeighbours();
-        List<Point> realNeighBours = new ArrayList<>();
+        List<Point> realNeighbours = new ArrayList<>();
         for (Point nei : allNeighbours) {
-            if (p.insideSquare(size)) {
-                realNeighBours.add(p);
+            if (nei.insideBoard(size)) {
+                realNeighbours.add(nei);
             }
         }
-        return realNeighBours;
+        return realNeighbours;
     }
 
     public Board makeHiddenBoard() {
@@ -107,12 +109,22 @@ public class RealBoard implements Board {
         return hidden;
     }
 
-    public void printBoard() {
+    public void print() {
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 Point p = new Point(x, y);
-                field.get(p);
+                if (field.get(p) != null) {
+                    if ((field.get(p).check() == -1) || (field.get(p).check() == -2)) {
+                        System.out.print(" " + field.get(p).check() + " ");
+                    } else {
+                        System.out.print("  " + field.get(p).check() + " ");
+                    }
+                } else {
+                    System.out.print("  0 ");
+                }
             }
+            System.out.println();
         }
+        System.out.println();
     }
 }

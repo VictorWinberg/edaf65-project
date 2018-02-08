@@ -26,6 +26,6 @@ public class EmptySquare implements Square {
 
     @Override
     public Color getColor() {
-        return null;
+        return Color.white;
     }
 }

@@ -19,7 +19,7 @@ public class HiddenSquare implements Square {
 
     @Override
     public Color getColor() {
-        return null;
+        return Color.lightGray;
     }
 
 }

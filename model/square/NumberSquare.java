@@ -28,6 +28,6 @@ public class NumberSquare implements Square {
 
     @Override
     public Color getColor() {
-        return null;
+        return Color.blue;
     }
 }
