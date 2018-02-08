@@ -3,33 +3,29 @@ package model;
 public class Minesweeper {
     private RealBoard board;
 
-    public Minesweeper() {
-        board = new RealBoard(9, 10);
+    public Minesweeper(int size, int bombs) {
+        board = new RealBoard(size, bombs);
     }
 
-    public Board pick(int x, int y) {
+    public int[][] pick(int x, int y) {
         Point p = new Point(x, y);
+        if(board.isVisible(p)){
+            return null;
+        }
         if (board.isBomb(p)) {
-            return board;
+            return board.readable();
         }
         board.pick(p);
-        return board.makeHiddenBoard();
+        return board.makeHiddenBoard().readable();
     }
 
-    public Board flag(int x, int y) {
+    public int[][] flag(int x, int y) {
         Point p = new Point(x, y);
         board.setFlag(p);
-        return board.makeHiddenBoard();
+        return board.makeHiddenBoard().readable();
     }
 
-    public Board getUserBoard() {
-        return board.makeHiddenBoard();
-    }
-
-    public static void main(String[] args){
-        Minesweeper m = new Minesweeper();
-        for(int i = 0; i < 8; i++){
-            m.pick(i,1).print();
-        }
+    public int[][] getUserBoard() {
+        return board.makeHiddenBoard().readable();
     }
 }

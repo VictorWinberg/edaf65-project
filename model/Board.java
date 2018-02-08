@@ -10,4 +10,8 @@ public interface Board {
     Board makeHiddenBoard();
 
     void print();
+
+    boolean isVisible(Point p);
+
+    int[][] readable();
 }
