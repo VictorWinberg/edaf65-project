@@ -2,7 +2,7 @@
   "name": "edaf65-project",
   "version": "1.0.0",
   "description": "Nätverksprogrammering Projekt",
-  "main": "node",
+  "main": "view",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/VictorWinberg/edaf65-project.git"

@@ -1,4 +1,4 @@
-package server;
+package controller;
 
 public class Mailbox {
 
