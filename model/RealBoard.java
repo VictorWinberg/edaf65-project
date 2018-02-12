@@ -59,7 +59,12 @@ public class RealBoard implements Board {
 
     @Override
     public void setFlag(Point p) {
+    	if(!flagged.contains(p)){
         flagged.add(p);
+    	}
+    	else{
+    		flagged.remove(p);
+    	}
     }
 
     @Override

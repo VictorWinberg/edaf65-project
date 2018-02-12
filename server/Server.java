@@ -110,7 +110,7 @@ class ServerExchange extends Thread {
                             int x = Integer.parseInt(message.split(" ", 2)[0]);
                             int y = Integer.parseInt(message.split(" ", 2)[1]);
                             minesweeper.flag(x - 1, y - 1);
-                            out.write(("Flagged position (\" + x + \", \" + y + \")\n" + minesweeper.toString() + "\n").getBytes());
+                            out.write(("Flagged position (" + x + ", " + y + ")\n" + minesweeper.toString() + "\n").getBytes());
                             break;
                         }
                         default:
