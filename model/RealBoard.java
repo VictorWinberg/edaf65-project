@@ -59,17 +59,16 @@ public class RealBoard implements Board {
 
     @Override
     public void setFlag(Point p) {
-    	if(!flagged.contains(p)){
-        flagged.add(p);
-    	}
-    	else{
-    		flagged.remove(p);
-    	}
+        if (!flagged.contains(p)) {
+            flagged.add(p);
+        } else {
+            flagged.remove(p);
+        }
     }
 
     @Override
     public void pick(Point p) {
-        Set visited = new HashSet<Point>();
+        Set<Point> visited = new HashSet<>();
         showNearbyZeros(p, visited);
     }
 

@@ -17,7 +17,7 @@ public class Minesweeper {
 
         }
         board.pick(p);
-        
+
         if (board.gameIsBeat()) {
             return "YOU WIN U ARE AMAAAAZING. WOOOOOOOOW. really. you did it.";
         }
