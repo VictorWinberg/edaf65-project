@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Basic Minesweeper game in Javascript">
+
+    <title>Minesweeper 2p</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="game.css">
+
+    <script defer src="js/Sketch.js"></script>
+    <script src="js/Zone.js"></script>
+    <script src="js/Board.js"></script>
+    <script src="js/Explosion.js"></script>
+    <script src="js/Timer.js"></script>
+
+</head>
+
+<body>
+    <!-- Minesweeper game  -->
+    <div id="container">
+        <!-- Left Panel -->
+        <div class="left">
+            <div id="game-info">
+                <img id="mine-img" src="img/mine.svg" height="25" width="25">
+            </div>
+        </div>
+
+        <!-- Custom Alert -->
+        <div id="alertContainer">
+            <div id="alertBox" class="center">
+                <!--<h1 id="customAlert-title" class="">Alert</h1>-->
+                <img id="alert-img" src="" class="alertBox-img">
+                <p id="customAlert-content">message</p>
+                <a id="closeBtn" href="#" onclick="removeCustomAlert()">Ok</a>
+            </div>
+        </div>
+
+        <!-- Middle Panel (game canvas) -->
+        <div id="game"></div>
+
+        <!-- Right Panel -->
+        <div class="right">
+          <div class="timer">
+              <p>Time:</p>
+              <timer id="timer">00:00</timer>
+          </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

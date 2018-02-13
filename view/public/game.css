@@ -1,0 +1,223 @@
+canvas,
+#board {
+    font-family: "Calibri", sans-serif;
+    border: 5px solid grey;
+}
+
+#container {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    float: left;
+}
+
+.info {
+    float: right;
+    font-family: "Roboto", Helvetica, sans-serif;
+    font-style: normal;
+    font-size: 20px;
+    margin-right: 5px;
+    height: auto;
+}
+
+#game,
+.right,
+.left {
+    display: inline-block;
+    vertical-align: top;
+    margin: 1em;
+}
+.left {
+    float: left;
+}
+
+#game-info {
+    margin-top: 20px;
+    height: 25px;
+}
+
+#game-info:hover {
+    opacity: 0.8;
+}
+
+#mines {
+  font-family: "Roboto", Helvetica, sans-serif;
+  font-style: normal;
+  font-size: 1.5em;
+  height: auto;
+}
+
+.timer {
+    font: 1em "Roboto", Helvetica, sans-serif;
+    color: #226A5C;    
+    opacity: 0.9;
+}
+
+.timer p {
+    margin-bottom: 5px;
+    margin-left: -2px;
+    font-weight: bold;
+    font-size: 110%;
+    opacity: 1;
+}
+.timer timer:hover {
+    color: #0099FF;
+    
+}
+.game-title {
+    width: 100%;
+    left: 0;
+    padding: 0;
+    margin-top: 5px;
+    margin-bottom: 30px;
+    font: 2em "Roboto", Helvetica, sans-serif;
+    display: inline-block;
+    color: grey;
+}
+
+#alertContainer {
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+}
+.center {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+
+#alertBox {
+    width: 350px;
+    height: 250px;
+    background-color: #fff;
+    border-radius: 7px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.6);;
+}
+.alertBox-img {
+    width: 100px;
+    height: 100px;
+    border: 0;
+    margin-top: 15px;
+    padding-left: 125px;
+}
+#alertBox h1 {
+    text-align: left;
+    margin: 0;
+    font: bold 1.2em "Trebuchet MS", Helvetica, sans-serif;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    height: 15%;
+    color: #FFF;
+    padding: 2px 0 2px 5px;
+}
+#alertBox p {
+    text-align: center;
+    font: bold 1.2em "Trebuchet MS", Helvetica, sans-serif;
+    height: 30px;
+    margin-top: 20px;
+    margin-bottom: 35px;
+}
+#alertBox #closeBtn {
+    display: block;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2%;
+    border: 0 none;
+    width: 20%;
+    font: bold 1em "Trebuchet MS", Helvetica, sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    color: #FFF;
+    background-color: #97DBDB;
+    border-radius: 3px;
+    text-decoration: none;
+}
+#closeBtn:hover {
+    -webkit-filter: brightness(90%);
+}
+
+/*
+* multi-line comment
+*/
+p { line-height: 1em; }
+h1, h2, h3, h4 {
+    color: orange;
+    font-weight: normal;
+    line-height: 1.1em;
+    margin: 0 0 .5em 0;
+}
+h1 { font-size: 1.7em; }
+h2 { font-size: 1.5em; }
+a {
+    color: black;
+    text-decoration: none;
+}
+a:hover,
+a:active { text-decoration: underline; }
+
+/* you can structure your code's white space so that it is as readable for when you come back in the future or for other people to read and edit quickly */
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 80%;
+    line-height: 1.2em;
+    width: 100%;
+    margin: 0;
+    background: #eee;
+}
+
+/* you can put your code all in one line like above */
+#page { margin: 20px; }
+
+/* but try and be as concise as possible */
+#nav {
+    width: 100%;
+    display: inline-block;
+    text-align: right;
+    float: left;
+}
+#nav ul {}
+#nav ul li {
+    display: inline-block;
+    height: 40px;
+}
+#nav ul li a {
+    padding: 20px;
+    background: orange;
+    color: white;
+}
+#nav ul li a:hover {
+    background-color: #ffb424;
+    box-shadow: 0px 1px 1px #666;
+}
+#nav ul li a:active { background-color: #ff8f00; }
+
+#content {
+    margin: 20px 0;
+    background: white;
+    padding: 20px;
+    clear: both;
+}
+#footer {
+    border-bottom: 1px #ccc solid;
+    margin-bottom: 10px;
+}
+#footer p {
+    text-align: right;
+    text-transform: uppercase;
+    font-size: 80%;
+    color: grey;
+}
+
+/* multiple styles seperated by a , */
+#content,
+ul li a { box-shadow: 0px 1px 1px #999; }
