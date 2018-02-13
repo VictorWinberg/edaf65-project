@@ -63,6 +63,7 @@ class ServerExchange extends Thread {
             String username = welcome(socket, in, out);
             User user = new User(username, socket);
             broadcaster.add(user);
+            mailbox.set(new Message(new User("Server", null), username + " joined."));
 
             while (!socket.isClosed()) {
                 try {
@@ -76,22 +77,26 @@ class ServerExchange extends Thread {
                     String message = input.split(" ", 2)[1].trim();
                     System.out.println("Client: " + message);
                     switch (command) {
+                        case "/h":
                         case "/help":
                             out.write(("Server: Available commands: /help, /all, /echo, /show, /play [size] [bombs], /quit\n").getBytes());
                             break;
+                        case "/a":
                         case "/all":
                             mailbox.set(new Message(user, message));
                             break;
+                        case "/e":
                         case "/echo":
-                            out.write(("Server: " + message + "\n").getBytes());
+                            out.write((message + "\n").getBytes());
                             break;
+                        case "/q":
                         case "/quit":
                             socket.close();
                             break;
                         case "/show":
                             String users = broadcaster.getUsers().stream()
                                     .map(Object::toString).collect(Collectors.joining(", "));
-                            out.write(("Server: Online Users - " + users + "\n").getBytes());
+                            out.write(("Online Users - " + users + "\n").getBytes());
                             break;
                         case "/play": {
                             int size = Integer.parseInt(message.split(" ", 2)[0]);
@@ -121,13 +126,14 @@ class ServerExchange extends Thread {
                     out.write("Server: Incorrect command, use /help to see the server commands.\n".getBytes());
                 } catch (ArrayIndexOutOfBoundsException a) {
                     System.out.println("Client incorrect command");
-                    System.out.println("Missing arguments!");
+                    out.write("Missing arguments!".getBytes());
                 }
             }
 
             in.close();
             out.close();
             broadcaster.remove(user);
+            mailbox.set(new Message(new User("", null), username + " left."));
             System.out.println("Client disconnected: " + socket.getInetAddress());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
