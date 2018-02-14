@@ -18,8 +18,14 @@ function createCanvas(body, id, width, height) {
   var canvas = document.createElement("canvas");
 
   canvas.id = id || "board";
-  canvas.width = width || 516;
-  canvas.height = height || 516;
+  if (window.screen.width < 768) {
+    var size = window.screen.width - 90; // Calc margin and padding
+    canvas.width = size;
+    canvas.height = size;
+  } else {
+    canvas.width = width || 516;
+    canvas.height = height || 516;
+  }
   //canvas.oncontextmenu = "javascript:return false;";
 
   body.appendChild(canvas);
