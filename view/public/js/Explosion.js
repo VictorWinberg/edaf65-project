@@ -30,7 +30,6 @@ function randomColor() {
 
 function randomDirection() {
   /* Return a vector pointing to a random direction */
-
   var angle = random(0, 360) * Math.PI / 180;
   var direction = {
     x: Math.cos(angle),
@@ -41,11 +40,6 @@ function randomDirection() {
 }
 
 function Particle() {
-  /*
-        Particles simple colored dot with a fixed size that moves
-        in a direction at a certain speed.
-
-    */
   this.x;
   this.y;
   this.radius;
@@ -97,10 +91,6 @@ function Particle() {
 }
 
 function Explosion(x, y, number, size, speed) {
-  /*
-        Creates an explosion with random particles and speed
-
-    */
   var sizeMax = size || 9;
   var sizeMin = 4;
   var speedMax = speed || 15;
@@ -128,9 +118,6 @@ function Explosion(x, y, number, size, speed) {
   };
 
   this.update = function(canvas) {
-    /*
-            Update the explosion
-        */
     for (var i = 0; i < this.particles.length; i++) {
       this.particles[i].update();
       this.particles[i].draw(canvas);

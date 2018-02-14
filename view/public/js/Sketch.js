@@ -11,21 +11,15 @@ var LOSE = {
   text: ["BOOOM !!", "br", "you've exploded!"]
 };
 
-/*
-------------------------------------------------------------------
-
-                        DOM Modifications
-
-------------------------------------------------------------------
-*/
+/* DOM Modifications */
 
 function createCanvas(body, id, width, height) {
   /* Create a canvas and but it in "body" can be any tagnamed element, id, width and height of teh canvas can be configured */
   var canvas = document.createElement("canvas");
 
   canvas.id = id || "board";
-  canvas.width = width || 258;
-  canvas.height = height || 258;
+  canvas.width = width || 516;
+  canvas.height = height || 516;
   //canvas.oncontextmenu = "javascript:return false;";
 
   body.appendChild(canvas);
@@ -66,8 +60,8 @@ function removeChildren(parent) {
 
 function addCustomAlert(type) {
   /* Add a custom alert with a text as the message and type win or lose */
-  var text,
-    content = document.getElementById("customAlert-content");
+  var text;
+  var content = document.getElementById("customAlert-content");
 
   timer.stop();
   removeChildren(content);
@@ -91,13 +85,7 @@ function removeCustomAlert() {
   setup(document.getElementById("board")); // restart the game, /!\ "board" is default value
 }
 
-/*
-------------------------------------------------------------------
-
-                        Listeners
-
-------------------------------------------------------------------
-*/
+/* Listeners */
 
 function getMousePos(canvas, evt) {
   /* Return the position of the mouse within the canvas */
@@ -148,13 +136,7 @@ function addCustomAlertListener(canvas) {
 
 }
 
-/*
-------------------------------------------------------------------
-
-                        Game start up
-
-------------------------------------------------------------------
-*/
+/* Game start up */
 
 function setTimer(id) {
   /* Set the timer and update the html with the specified id */
@@ -166,8 +148,7 @@ function setTimer(id) {
 function setup(canvas) {
   /* Setup the minesweeper game */
   timer.start();
-  board = new Board(64);
-  //board = new Board(canvas);
+  board = new Board(12, 20, canvas);
   updateTextNode("mines", "x" + board.mineNumber);
   board.draw(canvas);
 }
@@ -176,7 +157,6 @@ window.onload = function() {
   /* Main of the program, defines what is being done when the page loads */
 
   var body = document.getElementById("game");
-  //var body = document.getElementsByTagName("body")[0];
   var canvas = createCanvas(body); //Used also in Zone.js and Board.js to draw the game
   var ctx = canvas.getContext("2d");
 

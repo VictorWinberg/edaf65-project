@@ -1,11 +1,3 @@
-var pad = 2; //Value for the padding
-var size = 30; //Value for the size of a zone (a square)
-
-function autoSize(n) {
-  /* Calculate the number of padding and zoneSize that can fit in n, without missing the first padding */
-  return (n - pad) / (size + pad);
-}
-
 function removeFromArray(value, array) {
   /* Return a new array without all of the occurences of the specified value */
   var results = [];
@@ -20,41 +12,9 @@ function removeFromArray(value, array) {
   return results;
 }
 
-function Board(map, mineNumber) {
-  /*
-            Board accept two variables, map which defines how the board is created,
-            If you feed Board with a canvas, it will fill it with cases,
-            If you feed Board with a number, it will create a square of zones starting top left
-            A board is composed of multiple independant square zones
-            example:
-
-                             North
-
-                    -------- board --------
-                     0  1  2  3  4  5  6  7
-                     8  9 10 11 12 13 14 15
-                    16 17 18 19 20 21 22 23
-            West    24 25 26 27 28 29 30 31     East
-                    32 33 34 35 36 37 38 39
-                    40 41 42 43 44 45 46 47
-                    48 49 50 51 52 53 54 55
-                    56 57 58 59 60 61 62 63
-
-                            South
-
-            64 - boardSize
-            8  - column
-
-             -- zoneSize
-             __                 __   __
-            |  | <- Padding -> |  | |  |
-             --                 --   --
-    */
-
-  this.column = Math.round(Math.sqrt(map)) || Math.floor((autoSize(map.width)));
-  this.row = Math.round(Math.sqrt(map)) || Math.floor((autoSize(map.height)));
-  this.padding = pad;
-  this.zoneSize = size;
+function Board(size, mineNumber, canvas) {
+  this.column = size;
+  this.row = size;
   this.boardSize = this.column * this.row || 64;
   this.numberNotUnveiled = this.boardSize;
   this.mineNumber = mineNumber || this.column;
@@ -62,25 +22,11 @@ function Board(map, mineNumber) {
   this.mines = [];
   this.values = Array.apply(null, new Array(this.boardSize)).map(Number.prototype.valueOf, 0); // Array of zeros
 
-  this.autoFit = function(n) {
-    /* Try to reduce the amount of unused space in an inconvenient Canvas */
-    var x,
-      y;
-
-    //Detect the space to small to be filled with zone
-    x = n.width - this.column * (this.zoneSize + this.padding) - this.padding;
-    y = n.height - this.row * (this.zoneSize + this.padding) - this.padding;
-
-    //Divides the amount left by number of padding
-    x = x / (this.column + 1);
-    y = y / (this.row + 1);
-
-    //Adjust the padding depending on which side is bigger (height or width)
-    if (x > y) {
-      this.padding = Math.round(this.padding + y);
-    } else {
-      this.padding = Math.round(this.padding + x);
-    }
+  this.autoFit = function(canvas) {
+    /* Try to fit the squares in the Canvas */
+    this.padding = ( 1 / 15 ) * canvas.width / ( this.column + 1 );
+    this.zoneSize = canvas.width - (this.column + 1) * this.padding;
+    this.zoneSize /= this.column;
   };
 
   this.hasMine = function(n) {
@@ -335,10 +281,6 @@ function Board(map, mineNumber) {
     return zone;
   };
 
-  // So that the board is initialised when created with inconvenient canvas to fit it
-  if (!Number.isInteger(map)) {
-    this.autoFit(map);
-  }
+  this.autoFit(canvas);
   this.setZone();
-
 }
