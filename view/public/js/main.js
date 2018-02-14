@@ -1,5 +1,23 @@
 window.onload = function() {
   /* Main of the program, defines what is being done when the page loads */
+  var body = document.getElementById("game");
+  var canvas = createCanvas(body); //Used also in square.js and board.js to draw the game
+  var ctx = canvas.getContext("2d");
+
+  addListener(canvas, "mousemove");
+  addListener(canvas, "click");
+  addListener(canvas, "contextmenu");
+  addExplodeListener(canvas);
+  addCustomAlertListener(canvas);
+  setTimer("timer");
+
+  function startGame(size, mines) {
+    document.getElementById("game").style.display = "block";
+    document.getElementById("game-info").style.display = "block";
+    document.getElementById("time").style.display = "block";
+
+    setup(size, mines, canvas);
+  }
 
   // Get references to elements on the page.
   var form = document.getElementById('message-form');
@@ -33,7 +51,17 @@ window.onload = function() {
 
   // Handle messages sent by the server.
   ws.onmessage = function(event) {
-    var message = event.data.replace(/\n/g, "<br />");
+    var input = event.data;
+    if (input.charAt(0) === '/') {
+      var args = input.split(/ /);
+      switch (args[0]) {
+        case "/play":
+          startGame(parseInt(args[1]), parseInt(args[2]));
+          break;
+      }
+    }
+
+    var message = input.replace(/\n/g, "<br />");
     messagesList.innerHTML += '<li class="received"><span>Received:</span>' + message + '</li>';
     messagesList.scrollTop = Math.max(messagesList.scrollHeight, messagesList.scrollTop);
   };
@@ -75,19 +103,4 @@ window.onload = function() {
 
     return false;
   };
-  
-  var body = document.getElementById("game");
-  var canvas = createCanvas(body); //Used also in square.js and board.js to draw the game
-  var ctx = canvas.getContext("2d");
-
-  addListener(canvas, "mousemove");
-  addListener(canvas, "click");
-  addListener(canvas, "contextmenu");
-  addExplodeListener(canvas);
-  addCustomAlertListener(canvas);
-
-  addTextNode("game-info", 0, "mines");
-  setup(canvas);
-  setTimer("timer");
-
 };

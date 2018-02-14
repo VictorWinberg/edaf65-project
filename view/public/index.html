@@ -14,7 +14,7 @@
         <!-- <h1 id="customAlert-title" class="">Alert</h1> -->
         <img id="alert-img" src="" class="alertBox-img">
         <p id="customAlert-content">message</p>
-        <a id="closeBtn" href="#" onclick="removeCustomAlert()">Ok</a>
+        <a id="closeBtn" href="#" onclick="gameEnd()">Ok</a>
       </div>
     </div>
     <div id="page-wrapper">
@@ -24,17 +24,18 @@
 
       <!-- Left Panel -->
       <div class="left">
-        <div id="game-info">
+        <div id="game-info" style="display: none">
           <img id="mine-img" src="img/mine.svg" height="16" width="16">
+          <span id="mines"></span>
         </div>
-        <div class="timer">
+        <div id="time" style="display: none">
           <p>Time:</p>
           <timer id="timer">00:00</timer>
         </div>
       </div>
 
       <!-- Middle Panel (game canvas) -->
-      <div id="game"></div>
+      <div id="game" style="display: none"></div>
 
       <!-- Right Panel -->
       <div class="right"></div>

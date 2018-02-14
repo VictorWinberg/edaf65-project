@@ -34,9 +34,9 @@ function updateTextNode(id, text) {
   node.innerText = text || "error"; //IE
 }
 
-function addTextNode(parentId, text, id) {
+function addTextNode(parentId, text, id, type) {
   /* Add a text node under a parentId with a defined id in the HTML */
-  var element = document.createElement("span");
+  var element = document.createElement(type || "span");
   var p = text || "error";
   var node = document.createTextNode(p);
   var parent = document.getElementById(parentId);
@@ -78,11 +78,13 @@ function addCustomAlert(type) {
   document.getElementById("alert-img").src = type.img;
 }
 
-function removeCustomAlert() {
+function gameEnd() {
   /* Remove the custom alert */
   document.getElementById("alertContainer").style.visibility = "hidden";
+  document.getElementById("game").style.display = "none";
+  document.getElementById("game-info").style.display = "none";
+  document.getElementById("time").style.display = "none";
   timer.counter = "00:00";
-  setup(document.getElementById("board")); // restart the game, /!\ "board" is default value
 }
 
 /* Listeners */
@@ -141,14 +143,14 @@ function addCustomAlertListener(canvas) {
 function setTimer(id) {
   /* Set the timer and update the html with the specified id */
   setInterval(function() {
-    updateTextNode(id, timer.counter);
+    updateTextNode(id, timer.counter || "00:00");
   }, 1000);
 }
 
-function setup(canvas) {
+function setup(size, mines, canvas) {
   /* Setup the minesweeper game */
   timer.start();
-  board = new Board(12, 20, canvas);
+  board = new Board(size, mines, canvas);
   updateTextNode("mines", "x" + board.mineNumber);
   board.draw(canvas);
 }

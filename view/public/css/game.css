@@ -47,21 +47,21 @@ canvas,
   height: auto;
 }
 
-.timer {
+#time {
     font: 1em "Roboto", Helvetica, sans-serif;
     font-size: 80%;
     color: #226A5C;    
     opacity: 0.9;
 }
 
-.timer p {
+#time p {
     margin-bottom: 5px;
     margin-left: -2px;
     font-weight: bold;
     font-size: 110%;
     opacity: 1;
 }
-.timer timer:hover {
+#time timer:hover {
     color: #0099FF;
     
 }

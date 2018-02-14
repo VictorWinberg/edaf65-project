@@ -102,7 +102,7 @@ class ServerExchange extends Thread {
                             int size = Integer.parseInt(message.split(" ", 2)[0]);
                             int bombs = Integer.parseInt(message.split(" ", 2)[1]);
                             minesweeper = new Minesweeper(size, bombs);
-                            out.write(("Game started!\n  Commands: /pick [x] [y], /flag [x] [y]\n" + minesweeper.toString() + "\n").getBytes());
+                            out.write(("/play " + size + " " + bombs + " \nGame started!\n  Commands: /pick [x] [y], /flag [x] [y]\n" + minesweeper.toString() + "\n").getBytes());
                             break;
                         }
                         case "/pick": {
