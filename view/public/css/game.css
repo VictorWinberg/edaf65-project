@@ -21,13 +21,13 @@ canvas,
 }
 
 #game,
-.right,
-.left {
+#right,
+#left {
     display: inline-block;
     vertical-align: top;
     margin: 1em;
 }
-.left {
+#left {
     float: left;
 }
 

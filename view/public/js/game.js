@@ -83,6 +83,8 @@ function gameEnd() {
   document.getElementById("alertContainer").style.visibility = "hidden";
   document.getElementById("game").style.display = "none";
   document.getElementById("game-info").style.display = "none";
+  document.getElementById("left").style.display = "none";
+  document.getElementById("right").style.display = "none";
   document.getElementById("time").style.display = "none";
   timer.counter = "00:00";
 }

@@ -14,6 +14,8 @@ window.onload = function() {
   function startGame(size, mines) {
     document.getElementById("game").style.display = "block";
     document.getElementById("game-info").style.display = "block";
+    document.getElementById("left").style.display = "block";
+    document.getElementById("right").style.display = "block";
     document.getElementById("time").style.display = "block";
 
     setup(size, mines, canvas);
