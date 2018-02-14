@@ -6,13 +6,13 @@ mineIMG.src = "../img/mine.svg";
 var flagIMG = new Image();
 flagIMG.src = "../img/flag.svg";
 
-function colorSelector(zone, n) {
+function colorSelector(square, n) {
   /* Select the color based on the value */
   var color;
 
   switch (n) {
-    case 0: // background color of the zone
-      color = zone.getColor();
+    case 0: // background color of the square
+      color = square.getColor();
       break;
     case 1: // green
       color = "#75BF11";
@@ -47,7 +47,7 @@ function colorSelector(zone, n) {
 }
 
 function Zone(x, y, mine, size, value) {
-  /* zone of a minesweeper board */
+  /* square of a minesweeper board */
   this.x = x;
   this.y = y;
   this.color = colorDefault; //grey
@@ -58,12 +58,12 @@ function Zone(x, y, mine, size, value) {
   this.isUnveiled = false;
 
   this.getColor = function() {
-    /* Return the color of the zone */
+    /* Return the color of the square */
     return this.color;
   };
 
   this.hover = function() {
-    /* Update the color of the zone when called */
+    /* Update the color of the square when called */
     this.color = colorHovered;
   };
 
@@ -73,7 +73,7 @@ function Zone(x, y, mine, size, value) {
   };
 
   this.unveil = function() {
-    /* Returns different scenario when the zone is unveiled */
+    /* Returns different scenario when the square is unveiled */
     this.isUnveiled = true;
     this.color = colorUnveiled;
     this.hasMine;
@@ -86,11 +86,11 @@ function Zone(x, y, mine, size, value) {
   };
 
   this.draw = function(canvas) {
-    /* allows the zone to print itself in a canvas */
+    /* allows the square to print itself in a canvas */
 
     var ctx = canvas.getContext("2d");
 
-    //Draw the zone background
+    //Draw the square background
     ctx.beginPath();
     ctx.rect(this.x, this.y, Math.floor(size), Math.floor(size));
     ctx.fillStyle = this.color;

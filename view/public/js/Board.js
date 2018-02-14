@@ -18,24 +18,24 @@ function Board(size, mineNumber, canvas) {
   this.boardSize = this.column * this.row || 64;
   this.numberNotUnveiled = this.boardSize;
   this.mineNumber = mineNumber || this.column;
-  this.zones = [];
+  this.squares = [];
   this.mines = [];
   this.values = Array.apply(null, new Array(this.boardSize)).map(Number.prototype.valueOf, 0); // Array of zeros
 
   this.autoFit = function(canvas) {
     /* Try to fit the squares in the Canvas */
     this.padding = ( 1 / 15 ) * canvas.width / ( this.column + 1 );
-    this.zoneSize = canvas.width - (this.column + 1) * this.padding;
-    this.zoneSize /= this.column;
+    this.squareSize = canvas.width - (this.column + 1) * this.padding;
+    this.squareSize /= this.column;
   };
 
   this.hasMine = function(n) {
-    /* Check if an integer n is a zone where there's a mine */
+    /* Check if an integer n is a square where there's a mine */
     return this.mines.indexOf(n) > -1;
   };
 
   this.north = function(z) {
-    /* Return the zone north to the "z" one unless we're at the top row */
+    /* Return the square north to the "z" one unless we're at the top row */
     if ((0 <= z && z < this.column) || z === this.boardSize) {
       return this.boardSize;
     } else {
@@ -44,7 +44,7 @@ function Board(size, mineNumber, canvas) {
   };
 
   this.south = function(z) {
-    /* Return the zone south to the "z" one unless we're at the bottom row */
+    /* Return the square south to the "z" one unless we're at the bottom row */
     if ((this.boardSize - this.column <= z && z < this.boardSize) || z === this.boardSize) {
       return this.boardSize;
     } else {
@@ -53,7 +53,7 @@ function Board(size, mineNumber, canvas) {
   };
 
   this.east = function(z) {
-    /* Return the zone east to the "z" one unless we're at the eastern row */
+    /* Return the square east to the "z" one unless we're at the eastern row */
     if ((z % this.column === this.column - 1) || z === this.boardSize) {
       return this.boardSize;
     } else {
@@ -62,7 +62,7 @@ function Board(size, mineNumber, canvas) {
   };
 
   this.west = function(z) {
-    /* Return the zone west to the "z" one unless we're at the western row */
+    /* Return the square west to the "z" one unless we're at the western row */
     if ((z % this.column === 0) || z === this.boardSize) {
       return this.boardSize;
     } else {
@@ -71,7 +71,7 @@ function Board(size, mineNumber, canvas) {
   };
 
   this.neighbour = function(z) {
-    /* Return an array with all available surrounding zones of the *z* input one */
+    /* Return an array with all available surrounding squares of the *z* input one */
     var coord = [
       this.north(z),
       this.north(this.east(z)),
@@ -112,7 +112,7 @@ function Board(size, mineNumber, canvas) {
       j;
 
     for (i = 0; i <= this.mines.length; i++) {
-      //Increment the value for all surrounding zones
+      //Increment the value for all surrounding squares
       coord = this.neighbour(this.mines[i]);
 
       for (j = 0; j < coord.length; j++) {
@@ -123,22 +123,22 @@ function Board(size, mineNumber, canvas) {
   };
 
   this.addZone = function() {
-    /* Create a zone and add it to the board */
+    /* Create a square and add it to the board */
     var mine = false;
-    var value = this.values[this.zones.length];
-    var x = (this.zoneSize + this.padding) * (this.zones.length % this.column) + this.padding;
-    var y = (this.zoneSize + this.padding) * Math.floor(this.zones.length / this.column) + this.padding;
+    var value = this.values[this.squares.length];
+    var x = (this.squareSize + this.padding) * (this.squares.length % this.column) + this.padding;
+    var y = (this.squareSize + this.padding) * Math.floor(this.squares.length / this.column) + this.padding;
 
-    //When using addZones, the length of the zones moves from 0 to this.boardSize
-    if (this.hasMine(this.zones.length)) {
+    //When using addZones, the length of the squares moves from 0 to this.boardSize
+    if (this.hasMine(this.squares.length)) {
       mine = true;
     }
 
-    this.zones.push(new Zone(x, y, mine, this.zoneSize, value));
+    this.squares.push(new Zone(x, y, mine, this.squareSize, value));
   };
 
   this.setZone = function() {
-    /* Initialise board values and create the zones */
+    /* Initialise board values and create the squares */
 
     // Add the mines
     this.setMines();
@@ -146,8 +146,8 @@ function Board(size, mineNumber, canvas) {
     // Add all the values, the number that say how mines are around
     this.setValues();
 
-    // Create all the zones
-    while (this.zones.length < this.boardSize) {
+    // Create all the squares
+    while (this.squares.length < this.boardSize) {
       this.addZone();
     }
 
@@ -157,16 +157,16 @@ function Board(size, mineNumber, canvas) {
     /* Action to perform based on event received and the coordinates of the mouse */
     var z = this.getZone(x, y);
 
-    if (this.zones[z]) {
+    if (this.squares[z]) {
       switch (evt) {
         case "click":
           this.clicked(z, canvas);
           break;
         case "contextmenu":
-          this.zones[z].switchFlag();
+          this.squares[z].switchFlag();
           break;
         case "mousemove":
-          //this.zones[z].hover();
+          //this.squares[z].hover();
           break;
         default:
           //console.log("Unusual behaviour: " + evt);
@@ -175,12 +175,12 @@ function Board(size, mineNumber, canvas) {
     }
   };
 
-  this.explode = function(zone, canvas) {
+  this.explode = function(square, canvas) {
     /* Dispatch custom event "explode" */
     var explode = new CustomEvent("explode", {
       "detail": {
-        "x": zone.x,
-        "y": zone.y
+        "x": square.x,
+        "y": square.y
       }
     });
     canvas.dispatchEvent(explode);
@@ -195,10 +195,10 @@ function Board(size, mineNumber, canvas) {
     /* Unveil all the mines of the board */
 
     for (var i = 0; i < this.mines.length; i++) {
-      this.zones[this.mines[i]].unveil();
+      this.squares[this.mines[i]].unveil();
     }
 
-    this.explode(this.zones[z], canvas);
+    this.explode(this.squares[z], canvas);
     this.alertStatus(canvas, "lose");
   };
 
@@ -209,9 +209,9 @@ function Board(size, mineNumber, canvas) {
   };
 
   this.unveil = function(z) {
-    /* A zone can be unveiled if there's no flag, and it's not already unveiled */
-    if (!this.zones[z].flag && !this.zones[z].isUnveiled) {
-      this.zones[z].unveil();
+    /* A square can be unveiled if there's no flag, and it's not already unveiled */
+    if (!this.squares[z].flag && !this.squares[z].isUnveiled) {
+      this.squares[z].unveil();
       this.numberNotUnveiled--;
       return true;
     } else {
@@ -223,13 +223,13 @@ function Board(size, mineNumber, canvas) {
     var coord,
       j;
 
-    //Unveil the zone, if it fits the requirement, we continue with the possible neighbours
+    //Unveil the square, if it fits the requirement, we continue with the possible neighbours
     if (this.unveil(z)) {
-      if (!this.zones[z].value) {
+      if (!this.squares[z].value) {
         coord = this.neighbour(z);
 
         for (j = 0; j < coord.length; j++) {
-          if (!this.zones[coord[j]].isUnveiled) {
+          if (!this.squares[coord[j]].isUnveiled) {
             this.expand(coord[j]);
           }
 
@@ -243,7 +243,7 @@ function Board(size, mineNumber, canvas) {
 
     this.expand(z);
 
-    if (this.zones[z].hasMine()) {
+    if (this.squares[z].hasMine()) {
       this.gameOver(z, canvas);
     } else {
       this.checkWin(canvas);
@@ -260,25 +260,25 @@ function Board(size, mineNumber, canvas) {
     ctx.fillStyle = "#FFF";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    //The board will ask each zone to draw itself
-    for (var i = 0; i < this.zones.length; i++) {
-      this.zones[i].draw(canvas);
+    //The board will ask each square to draw itself
+    for (var i = 0; i < this.squares.length; i++) {
+      this.squares[i].draw(canvas);
     }
   };
 
   this.getZone = function(x, y) {
-    /* Give the zone number of a given position (x, y) */
+    /* Give the square number of a given position (x, y) */
     var column,
       row;
-    var zone = null;
+    var square = null;
 
-    if (x <= (this.zoneSize + this.padding) * this.column && y <= (this.zoneSize + this.padding) * this.column) {
-      column = Math.floor(x / (this.zoneSize + this.padding));
-      row = Math.floor(y / (this.zoneSize + this.padding));
-      zone = row * this.column + column;
+    if (x <= (this.squareSize + this.padding) * this.column && y <= (this.squareSize + this.padding) * this.column) {
+      column = Math.floor(x / (this.squareSize + this.padding));
+      row = Math.floor(y / (this.squareSize + this.padding));
+      square = row * this.column + column;
     }
 
-    return zone;
+    return square;
   };
 
   this.autoFit(canvas);
