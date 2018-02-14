@@ -1,4 +1,5 @@
 window.onload = function() {
+  /* Main of the program, defines what is being done when the page loads */
 
   // Get references to elements on the page.
   var form = document.getElementById('message-form');
@@ -74,5 +75,19 @@ window.onload = function() {
 
     return false;
   };
+  
+  var body = document.getElementById("game");
+  var canvas = createCanvas(body); //Used also in square.js and board.js to draw the game
+  var ctx = canvas.getContext("2d");
+
+  addListener(canvas, "mousemove");
+  addListener(canvas, "click");
+  addListener(canvas, "contextmenu");
+  addExplodeListener(canvas);
+  addCustomAlertListener(canvas);
+
+  addTextNode("game-info", 0, "mines");
+  setup(canvas);
+  setTimer("timer");
 
 };

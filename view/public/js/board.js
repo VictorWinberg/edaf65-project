@@ -122,22 +122,22 @@ function Board(size, mineNumber, canvas) {
     }
   };
 
-  this.addZone = function() {
+  this.addSquare = function() {
     /* Create a square and add it to the board */
     var mine = false;
     var value = this.values[this.squares.length];
     var x = (this.squareSize + this.padding) * (this.squares.length % this.column) + this.padding;
     var y = (this.squareSize + this.padding) * Math.floor(this.squares.length / this.column) + this.padding;
 
-    //When using addZones, the length of the squares moves from 0 to this.boardSize
+    //When using addSquares, the length of the squares moves from 0 to this.boardSize
     if (this.hasMine(this.squares.length)) {
       mine = true;
     }
 
-    this.squares.push(new Zone(x, y, mine, this.squareSize, value));
+    this.squares.push(new Square(x, y, mine, this.squareSize, value));
   };
 
-  this.setZone = function() {
+  this.setSquare = function() {
     /* Initialise board values and create the squares */
 
     // Add the mines
@@ -148,14 +148,14 @@ function Board(size, mineNumber, canvas) {
 
     // Create all the squares
     while (this.squares.length < this.boardSize) {
-      this.addZone();
+      this.addSquare();
     }
 
   };
 
   this.update = function(x, y, evt, canvas) {
     /* Action to perform based on event received and the coordinates of the mouse */
-    var z = this.getZone(x, y);
+    var z = this.getSquare(x, y);
 
     if (this.squares[z]) {
       switch (evt) {
@@ -266,7 +266,7 @@ function Board(size, mineNumber, canvas) {
     }
   };
 
-  this.getZone = function(x, y) {
+  this.getSquare = function(x, y) {
     /* Give the square number of a given position (x, y) */
     var column,
       row;
@@ -282,5 +282,5 @@ function Board(size, mineNumber, canvas) {
   };
 
   this.autoFit(canvas);
-  this.setZone();
+  this.setSquare();
 }

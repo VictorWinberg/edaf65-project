@@ -46,7 +46,7 @@ function colorSelector(square, n) {
   return color;
 }
 
-function Zone(x, y, mine, size, value) {
+function Square(x, y, mine, size, value) {
   /* square of a minesweeper board */
   this.x = x;
   this.y = y;

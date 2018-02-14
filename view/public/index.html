@@ -4,13 +4,40 @@
     <title>Minesweeper 2p</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/chat.css">
+    <link rel="stylesheet" type="text/css" href="css/game.css">
   </head>
   <body>
+    <!-- Custom Alert -->
+    <div id="alertContainer">
+      <div id="alertBox" class="center">
+        <!-- <h1 id="customAlert-title" class="">Alert</h1> -->
+        <img id="alert-img" src="" class="alertBox-img">
+        <p id="customAlert-content">message</p>
+        <a id="closeBtn" href="#" onclick="removeCustomAlert()">Ok</a>
+      </div>
+    </div>
     <div id="page-wrapper">
       <h1>Minesweeper 2p</h1>
 
       <div id="status">Connecting...</div>
+
+      <!-- Left Panel -->
+      <div class="left">
+        <div id="game-info">
+          <img id="mine-img" src="img/mine.svg" height="16" width="16">
+        </div>
+        <div class="timer">
+          <p>Time:</p>
+          <timer id="timer">00:00</timer>
+        </div>
+      </div>
+
+      <!-- Middle Panel (game canvas) -->
+      <div id="game"></div>
+
+      <!-- Right Panel -->
+      <div class="right"></div>
 
       <ul id="messages"></ul>
 
@@ -20,6 +47,12 @@
         <button type="button" id="close">Close Connection</button>
       </form>
     </div>
-    <script src="script.js"></script>
+    <script defer src="js/main.js"></script>
+
+    <script defer src="js/game.js"></script>
+    <script src="js/square.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/explosion.js"></script>
+    <script src="js/timer.js"></script>
   </body>
 </html>

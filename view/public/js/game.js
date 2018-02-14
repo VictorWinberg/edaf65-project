@@ -152,21 +152,3 @@ function setup(canvas) {
   updateTextNode("mines", "x" + board.mineNumber);
   board.draw(canvas);
 }
-
-window.onload = function() {
-  /* Main of the program, defines what is being done when the page loads */
-
-  var body = document.getElementById("game");
-  var canvas = createCanvas(body); //Used also in Zone.js and Board.js to draw the game
-  var ctx = canvas.getContext("2d");
-
-  addListener(canvas, "mousemove");
-  addListener(canvas, "click");
-  addListener(canvas, "contextmenu");
-  addExplodeListener(canvas);
-  addCustomAlertListener(canvas);
-
-  addTextNode("game-info", 0, "mines");
-  setup(canvas);
-  setTimer("timer");
-};
