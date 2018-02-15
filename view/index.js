@@ -16,6 +16,9 @@ wss.on('connection', function connection(ws, req) {
   const socket = new net.Socket()
   socket.connect(PORT)
 
+  ws.isAlive = true
+  ws.socket = socket
+
   socket.on('data', function(response) {
     ws.send(response.toString())
   })
@@ -37,7 +40,23 @@ wss.on('connection', function connection(ws, req) {
   ws.on('error', function (err) {
     console.error(err);
   })
+
+  ws.on('pong', function () {
+    this.isAlive = true
+  })
 })
+
+setInterval(function ping() {
+  wss.clients.forEach(function each(ws) {
+    if (ws.isAlive === false) {
+      ws.socket.destroy()
+      ws.terminate()
+    } else {
+      ws.isAlive = false
+      ws.ping()
+    }
+  })
+}, 30000)
 
 server.listen(3006, function () {
   console.log('Listening on %d', server.address().port)
