@@ -155,10 +155,12 @@ function setTimer(id) {
   }, 1000);
 }
 
-function setup(size, mines, canvas) {
+function setup(size, mines, canvas, ws) {
   /* Setup the minesweeper game */
   timer.start();
-  board = new Board(size, mines, canvas);
+  board = new Board(size, mines, canvas, ws);
   updateTextNode("mines", "x" + board.mineNumber);
   board.draw(canvas);
+
+  return board;
 }

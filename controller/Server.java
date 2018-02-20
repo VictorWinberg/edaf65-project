@@ -102,20 +102,25 @@ class ServerExchange extends Thread {
                             int size = Integer.parseInt(message.split(" ", 2)[0]);
                             int bombs = Integer.parseInt(message.split(" ", 2)[1]);
                             minesweeper = new Minesweeper(size, bombs);
-                            out.write(("/play " + size + " " + bombs + " \nGame started!\n  Commands: /pick [x] [y], /flag [x] [y]\n" + minesweeper.toString() + "\n").getBytes());
+                            out.write(("/play " + size + " " + bombs + "\n" + minesweeper.toString() + "\n" +
+                                       "Game started with size " + size + " and bombs " + bombs + "!\n" +
+                                       "Commands: /pick [x] [y], /flag [x] [y]\n").getBytes());
                             break;
                         }
                         case "/pick": {
                             int x = Integer.parseInt(message.split(" ", 2)[0]);
                             int y = Integer.parseInt(message.split(" ", 2)[1]);
-                            out.write(("Picked position (" + x + ", " + y + ")\n" + minesweeper.pick(x - 1, y - 1) + "\n").getBytes());
+                            String board = minesweeper.pick(x - 1, y - 1);
+                            out.write(("/board " + x + " " + y + "\n" + board + "\n" +
+                                       "Picked position (" + x + ", " + y + ")\n\n").getBytes());
                             break;
                         }
                         case "/flag": {
                             int x = Integer.parseInt(message.split(" ", 2)[0]);
                             int y = Integer.parseInt(message.split(" ", 2)[1]);
-                            minesweeper.flag(x - 1, y - 1);
-                            out.write(("Flagged position (" + x + ", " + y + ")\n" + minesweeper.toString() + "\n").getBytes());
+                            String board = minesweeper.flag(x - 1, y - 1);
+                            out.write(("/board " + x + " " + y + "\n" + board + "\n" +
+                                       "Flagged position (" + x + ", " + y + ")\n").getBytes());
                             break;
                         }
                         default:

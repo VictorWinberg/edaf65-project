@@ -25,10 +25,10 @@ public class Minesweeper {
 
     }
 
-    public int[][] flag(int x, int y) {
+    public String flag(int x, int y) {
         Point p = new Point(x, y);
         board.setFlag(p);
-        return board.makeHiddenBoard().readable();
+        return board.makeHiddenBoard().toString();
     }
 
     public int[][] getUserBoard() {

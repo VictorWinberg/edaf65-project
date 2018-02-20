@@ -12,7 +12,7 @@ function removeFromArray(value, array) {
   return results;
 }
 
-function Board(size, mineNumber, canvas) {
+function Board(size, mineNumber, canvas, ws) {
   this.column = size;
   this.row = size;
   this.boardSize = this.column * this.row || 64;
@@ -141,10 +141,10 @@ function Board(size, mineNumber, canvas) {
     /* Initialise board values and create the squares */
 
     // Add the mines
-    this.setMines();
+    // this.setMines();
 
     // Add all the values, the number that say how mines are around
-    this.setValues();
+    // this.setValues();
 
     // Create all the squares
     while (this.squares.length < this.boardSize) {
@@ -155,12 +155,12 @@ function Board(size, mineNumber, canvas) {
 
   this.update = function(x, y, evt, canvas) {
     /* Action to perform based on event received and the coordinates of the mouse */
-    var z = this.getSquare(x, y);
+    var [col, row, z] = this.getSquare(x, y);
 
     if (this.squares[z]) {
       switch (evt) {
         case "click":
-          this.clicked(z, canvas);
+          this.clicked(col, row, z, canvas);
           break;
         case "contextmenu":
           this.squares[z].switchFlag();
@@ -238,10 +238,11 @@ function Board(size, mineNumber, canvas) {
     }
   };
 
-  this.clicked = function(z, canvas) {
+  this.clicked = function(col, row, z, canvas) {
     /* Define how the board reacts when it's clicked */
 
-    this.expand(z);
+    // this.expand(z);
+    ws.send('/pick ' + (col + 1) + ' ' + (row + 1))
 
     if (this.squares[z].hasMine()) {
       this.gameOver(z, canvas);
@@ -278,7 +279,7 @@ function Board(size, mineNumber, canvas) {
       square = row * this.column + column;
     }
 
-    return square;
+    return [column, row, square];
   };
 
   this.autoFit(canvas);

@@ -1,5 +1,7 @@
 window.onload = function() {
   /* Main of the program, defines what is being done when the page loads */
+  var board = null;
+
   var body = document.getElementById("game");
   var canvas = createCanvas(body); //Used also in square.js and board.js to draw the game
   var ctx = canvas.getContext("2d");
@@ -11,14 +13,14 @@ window.onload = function() {
   addCustomAlertListener(canvas);
   setTimer("timer");
 
-  function startGame(size, mines) {
+  function startGame(size, mines, ws) {
     document.getElementById("game").style.display = "block";
     document.getElementById("game-info").style.display = "block";
     document.getElementById("left").style.display = "block";
     document.getElementById("right").style.display = "block";
     document.getElementById("time").style.display = "block";
 
-    setup(size, mines, canvas);
+    board = setup(size, mines, canvas, ws);
   }
 
   // Get references to elements on the page.
@@ -55,15 +57,26 @@ window.onload = function() {
   ws.onmessage = function(event) {
     var input = event.data;
     if (input.charAt(0) === '/') {
-      var args = input.split(/ /);
+      var [args, input] = input.split(/\r?\n([\s\S]*)/);
+      args = args.split(" ");
+      console.log('args', args);
       switch (args[0]) {
         case "/play":
-          startGame(parseInt(args[1]), parseInt(args[2]));
+          startGame(parseInt(args[1]), parseInt(args[2]), ws);
+        case "/board":
+          var [row, col] = [args[1], args[2]]
+          var inputs = input.split(/\r?\n/);
+          var values = inputs.splice(0, board.row).join(' ').trim()
+            .split(/\s+/).map(i => parseInt(i));
+
+          console.log(values);
+
+          input = inputs.join('\n').trim();
           break;
       }
     }
 
-    var message = input.replace(/\n/g, "<br />");
+    var message = input.replace(/\r?\n/g, "<br />");
     messagesList.innerHTML += '<li class="received"><span>Received:</span>' + message + '</li>';
     messagesList.scrollTop = Math.max(messagesList.scrollHeight, messagesList.scrollTop);
   };
