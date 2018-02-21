@@ -10,16 +10,16 @@ public class Minesweeper {
     public String pick(int x, int y) {
         Point p = new Point(x, y);
         if (board.isVisible(p)) {
-            return "ILLEGAL MOVE, pick something new pls";
-        }
-        if (board.isBomb(p)) {
+            return board.makeHiddenBoard().toString() + "\nILLEGAL MOVE, pick something new pls";
+        } else if (board.isBomb(p)) {
             return board + "\nYOU LOSE #NICETRYBRO";
 
         }
+
         board.pick(p);
 
         if (board.gameIsBeat()) {
-            return "YOU WIN U ARE AMAAAAZING. WOOOOOOOOW. really. you did it.";
+            return board + "\nYOU WIN U ARE AMAAAAZING. WOOOOOOOOW. really. you did it.";
         }
         return board.makeHiddenBoard().toString();
 

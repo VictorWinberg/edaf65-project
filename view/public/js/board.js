@@ -1,17 +1,3 @@
-function removeFromArray(value, array) {
-  /* Return a new array without all of the occurences of the specified value */
-  var results = [];
-
-  for (var i = 0; i < array.length; i++) {
-    // Coord with this.boardsize as value are not available and are removed
-    if (array[i] !== value) {
-      results.push(array[i]);
-    }
-  }
-
-  return results;
-}
-
 function Board(size, mineNumber, canvas, ws) {
   this.column = size;
   this.row = size;
@@ -34,123 +20,39 @@ function Board(size, mineNumber, canvas, ws) {
     return this.mines.indexOf(n) > -1;
   };
 
-  this.north = function(z) {
-    /* Return the square north to the "z" one unless we're at the top row */
-    if ((0 <= z && z < this.column) || z === this.boardSize) {
-      return this.boardSize;
-    } else {
-      return z - this.column;
-    }
-  };
-
-  this.south = function(z) {
-    /* Return the square south to the "z" one unless we're at the bottom row */
-    if ((this.boardSize - this.column <= z && z < this.boardSize) || z === this.boardSize) {
-      return this.boardSize;
-    } else {
-      return z + this.column;
-    }
-  };
-
-  this.east = function(z) {
-    /* Return the square east to the "z" one unless we're at the eastern row */
-    if ((z % this.column === this.column - 1) || z === this.boardSize) {
-      return this.boardSize;
-    } else {
-      return z + 1;
-    }
-  };
-
-  this.west = function(z) {
-    /* Return the square west to the "z" one unless we're at the western row */
-    if ((z % this.column === 0) || z === this.boardSize) {
-      return this.boardSize;
-    } else {
-      return z - 1;
-    }
-  };
-
-  this.neighbour = function(z) {
-    /* Return an array with all available surrounding squares of the *z* input one */
-    var coord = [
-      this.north(z),
-      this.north(this.east(z)),
-      this.north(this.west(z)),
-      this.south(z),
-      this.south(this.east(z)),
-      this.south(this.west(z)),
-      this.east(z),
-      this.west(z)
-    ];
-
-    // Coord with this.boardsize as value are not available and are removed
-    return removeFromArray(this.boardSize, coord);
-
-  };
-
-  this.setMines = function() {
-    /* Create the mines array */
-
-    while (this.mines.length < this.mineNumber) {
-      var n = Math.ceil(Math.random() * (this.boardSize - 1));
-
-      if (!this.hasMine(n)) {
-        this.mines.push(n);
-      }
-    }
-
-    // Have the mines in the right order (not mandatory)
-    this.mines.sort(function(a, b) {
-      return a - b;
-    });
-  };
-
-  this.setValues = function() {
-    /* Generates this.values[] which stores the number that says how many mines are around */
-    var coord,
-      i,
-      j;
-
-    for (i = 0; i <= this.mines.length; i++) {
-      //Increment the value for all surrounding squares
-      coord = this.neighbour(this.mines[i]);
-
-      for (j = 0; j < coord.length; j++) {
-        this.values[coord[j]] += 1;
-      }
-
-    }
-  };
-
   this.addSquare = function() {
     /* Create a square and add it to the board */
     var mine = false;
-    var value = this.values[this.squares.length];
+    var value = 0;
     var x = (this.squareSize + this.padding) * (this.squares.length % this.column) + this.padding;
     var y = (this.squareSize + this.padding) * Math.floor(this.squares.length / this.column) + this.padding;
-
-    //When using addSquares, the length of the squares moves from 0 to this.boardSize
-    if (this.hasMine(this.squares.length)) {
-      mine = true;
-    }
 
     this.squares.push(new Square(x, y, mine, this.squareSize, value));
   };
 
-  this.setSquare = function() {
-    /* Initialise board values and create the squares */
-
-    // Add the mines
-    // this.setMines();
-
-    // Add all the values, the number that say how mines are around
-    // this.setValues();
-
-    // Create all the squares
+  this.setSquares = function() {
+    /* Create all the squares */
     while (this.squares.length < this.boardSize) {
       this.addSquare();
     }
+  };
 
+  this.updateSquares = function(z) {
+    for (var i = 0; i < this.squares.length; i++) {
+      this.squares[i].value = this.values[i];
+      this.squares[i].mine = this.hasMine(i);
+      if (this.squares[i].value >= 0) {
+        this.unveil(i);
+      }
+    }
+
+    if (this.hasMine(z)) {
+      this.gameOver(z, canvas);
+    } else {
+      this.checkWin(canvas);
+    }
+
+    this.draw(canvas);
   };
 
   this.update = function(x, y, evt, canvas) {
@@ -214,43 +116,15 @@ function Board(size, mineNumber, canvas, ws) {
       this.squares[z].unveil();
       this.numberNotUnveiled--;
       return true;
-    } else {
-      return false;
     }
-  };
 
-  this.expand = function(z) {
-    var coord,
-      j;
-
-    //Unveil the square, if it fits the requirement, we continue with the possible neighbours
-    if (this.unveil(z)) {
-      if (!this.squares[z].value) {
-        coord = this.neighbour(z);
-
-        for (j = 0; j < coord.length; j++) {
-          if (!this.squares[coord[j]].isUnveiled) {
-            this.expand(coord[j]);
-          }
-
-        }
-      }
-    }
+    return false;
   };
 
   this.clicked = function(col, row, z, canvas) {
     /* Define how the board reacts when it's clicked */
-
-    // this.expand(z);
-    ws.send('/pick ' + (col + 1) + ' ' + (row + 1))
-
-    if (this.squares[z].hasMine()) {
-      this.gameOver(z, canvas);
-    } else {
-      this.checkWin(canvas);
-
-    }
-    //*/
+    this.unveil(z);
+    ws.send('/pick ' + (col + 1) + ' ' + (row + 1));
   };
 
   this.draw = function(canvas) {
@@ -283,5 +157,5 @@ function Board(size, mineNumber, canvas, ws) {
   };
 
   this.autoFit(canvas);
-  this.setSquare();
+  this.setSquares();
 }

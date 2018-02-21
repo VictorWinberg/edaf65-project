@@ -64,12 +64,18 @@ window.onload = function() {
         case "/play":
           startGame(parseInt(args[1]), parseInt(args[2]), ws);
         case "/board":
-          var [row, col] = [args[1], args[2]]
+          var [col, row] = [parseInt(args[1]) - 1, parseInt(args[2]) - 1]
           var inputs = input.split(/\r?\n/);
+
           var values = inputs.splice(0, board.row).join(' ').trim()
             .split(/\s+/).map(i => parseInt(i));
+          var mines = values
+            .reduce((arr, e, i) => e === -1 ? arr.concat(i) : arr, []);
 
-          console.log(values);
+          board.values = values;
+          board.mines = mines;
+
+          board.updateSquares(row * board.column + col);
 
           input = inputs.join('\n').trim();
           break;

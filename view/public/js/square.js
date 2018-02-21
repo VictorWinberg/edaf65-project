@@ -38,8 +38,8 @@ function colorSelector(square, n) {
     case 8: // purple
       color = "#E5104E";
       break;
-    default: // black
-      color = "#202020";
+    default: // background color of the square
+      color = square.getColor();
       break;
   }
 
