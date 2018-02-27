@@ -62,6 +62,12 @@ public class RealBoard implements Board {
         showNearbyZeros(p, visited);
     }
 
+    private void showOnes() {
+        for (Map.Entry<Point, Square> cell : field.entrySet()) {
+
+        }
+    }
+
     public boolean gameIsBeat() {
         for (Square sq : field.values()) {
             if (sq.check() > 0 && !sq.isVisible()) {
@@ -78,6 +84,7 @@ public class RealBoard implements Board {
                 field.get(p).makeVisible();
                 List<Point> neighbours = getNeighbourPoints(p);
                 for (Point nei : neighbours) {
+                    field.get(nei).makeVisible();
                     showNearbyZeros(nei, visited);
                 }
             }

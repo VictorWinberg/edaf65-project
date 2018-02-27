@@ -19,7 +19,7 @@ public class User {
             if (socket != null) {
                 return socket == other.socket;
             }
-            return username == other.username;
+            return username.equals(other.username);
         }
         return false;
     }
