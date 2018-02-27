@@ -104,7 +104,7 @@ class ServerExchange extends Thread {
                             minesweeper = new Minesweeper(size, bombs);
                             out.write(("/play " + size + " " + bombs + "\n" + minesweeper.toString() + "\n" +
                                        "Game started with size " + size + " and bombs " + bombs + "!\n" +
-                                       "Commands: /pick [x] [y], /flag [x] [y]\n").getBytes());
+                                       "Commands: /pick [x] [y]").getBytes());
                             break;
                         }
                         case "/pick": {
@@ -113,14 +113,6 @@ class ServerExchange extends Thread {
                             String board = minesweeper.pick(x - 1, y - 1);
                             out.write(("/board " + x + " " + y + "\n" + board + "\n" +
                                        "Picked position (" + x + ", " + y + ")\n\n").getBytes());
-                            break;
-                        }
-                        case "/flag": {
-                            int x = Integer.parseInt(message.split(" ", 2)[0]);
-                            int y = Integer.parseInt(message.split(" ", 2)[1]);
-                            String board = minesweeper.flag(x - 1, y - 1);
-                            out.write(("/board " + x + " " + y + "\n" + board + "\n" +
-                                       "Flagged position (" + x + ", " + y + ")\n").getBytes());
                             break;
                         }
                         default:

@@ -24,12 +24,6 @@ public class Minesweeper {
         return board.makeHiddenBoard().toString();
     }
 
-    public String flag(int x, int y) {
-        Point p = new Point(x, y);
-        board.setFlag(p);
-        return board.makeHiddenBoard().toString();
-    }
-
     public int[][] getUserBoard() {
         return board.makeHiddenBoard().readable();
     }
