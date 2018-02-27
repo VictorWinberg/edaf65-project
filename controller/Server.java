@@ -126,16 +126,16 @@ class ServerExchange extends Thread {
                                         .filter(u -> u.username.equals(opponent_name)).findFirst();
                                 if (opponent.isPresent()) {
                                     user.setOpponent(opponent.get()).setMinesweeper(minesweeper);
-                                    broadcaster.update(user);
                                     broadcaster.update(opponent.get().setOpponent(user).setMinesweeper(minesweeper));
                                     out.write(("Waiting for " + opponent_name + " to accept.\n").getBytes());
                                     opponent.get().socket.getOutputStream()
-                                            .write((username + " challenged you for a DUAL! /accept to accept" + "\n").getBytes());
+                                            .write((username + " challenged you for a DUAL! \nPlease write /accept.\n").getBytes());
                                 } else {
                                     out.write(("Server: Could not find " + opponent_name + "\n").getBytes());
                                 }
 
                             } else {
+                                user.setOpponent(null);
                                 out.write(("/play " + size + " " + bombs + "\n" + minesweeper.toString() + "\n" +
                                         "Game started with size " + size + " and bombs " + bombs + "!\n" +
                                         "Commands: /pick [x] [y]").getBytes());
@@ -160,15 +160,26 @@ class ServerExchange extends Thread {
                             break;
                         }
                         case "/pick": {
-                            int x = Integer.parseInt(message.split(" ", 2)[0]);
-                            int y = Integer.parseInt(message.split(" ", 2)[1]);
-                            String board = minesweeper.pick(x - 1, y - 1);
-                            String text = "/board " + x + " " + y + "\n" + board + "\n" +
-                                    "Picked position (" + x + ", " + y + ")\n";
-                            out.write(text.getBytes());
-                            if (user.hasOpponent()) {
-                                user.getOpponent().socket.getOutputStream().write(text.getBytes());
+                            if (minesweeper.playerTurn(username)) {
+                                int x = Integer.parseInt(message.split(" ", 2)[0]);
+                                int y = Integer.parseInt(message.split(" ", 2)[1]);
+                                String board = minesweeper.pick(x - 1, y - 1);
+                                if (board == null) {
+                                    out.write("Illegal move! Please try again\n".getBytes());
+                                } else {
+                                    String text = "/board " + x + " " + y + "\n" + board + "\n" +
+                                            "Picked position (" + x + ", " + y + ")\n";
+                                    out.write(text.getBytes());
+                                    if (user.hasOpponent()) {
+                                        user.getOpponent().socket.getOutputStream().write(text.getBytes());
+                                    }
+                                    int time = minesweeper.playerTime(username);
+                                    out.write(("/time" + time + "\n").getBytes());
+                                }
+                            } else {
+                                out.write("Not your turn! Chill ...\n".getBytes());
                             }
+
                             out.write((timer.getTime() + "\n").getBytes());
                             timer.switchTurn();
                             break;

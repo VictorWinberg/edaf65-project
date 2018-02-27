@@ -39,4 +39,12 @@ public class Minesweeper {
     public String toString() {
         return board.makeHiddenBoard().toString();
     }
+
+    public boolean playerTurn(String username) {
+        return false;
+    }
+
+    public int playerTime(String username) {
+        return -1;
+    }
 }
