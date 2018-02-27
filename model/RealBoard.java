@@ -120,6 +120,14 @@ public class RealBoard implements Board {
         return hidden;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public int getBombs() {
+        return bombs;
+    }
+
     public String toString() {
         StringBuilder bob = new StringBuilder();
         for (int y = 0; y < size; y++) {

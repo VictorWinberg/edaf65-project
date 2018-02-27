@@ -9,14 +9,29 @@ public class User {
     public final String username;
     public final Socket socket;
     private Minesweeper minesweeper;
+    private User opponent;
 
     public User(String username, Socket socket) {
         this.username = username;
         this.socket = socket;
     }
 
-    public void setMinesweeper(Minesweeper minesweeper) {
+    public User setOpponent(User opponent) {
+        this.opponent = opponent;
+        return this;
+    }
+
+    public boolean hasOpponent() {
+        return opponent != null;
+    }
+
+    public User getOpponent() {
+        return opponent;
+    }
+
+    public User setMinesweeper(Minesweeper minesweeper) {
         this.minesweeper = minesweeper;
+        return this;
     }
 
     public Minesweeper getMinesweeper() {

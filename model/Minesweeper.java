@@ -28,6 +28,14 @@ public class Minesweeper {
         return board.makeHiddenBoard().readable();
     }
 
+    public int getSize() {
+        return board.getSize();
+    }
+
+    public int getBombs() {
+        return board.getBombs();
+    }
+
     public String toString() {
         return board.makeHiddenBoard().toString();
     }

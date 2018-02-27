@@ -83,7 +83,7 @@ class ServerExchange extends Thread {
                     switch (command) {
                         case "/h":
                         case "/help":
-                            out.write(("Server: Available commands: /help, /all, /echo, /show, /play [size] [bombs], /quit\n").getBytes());
+                            out.write(("Server: Available commands: /help, /all, /echo, /whisper [user], /show, /play [size] [bombs] <user>, /quit\n").getBytes());
                             break;
                         case "/a":
                         case "/all":
@@ -116,21 +116,59 @@ class ServerExchange extends Thread {
                             out.write(("Online Users - " + users + "\n").getBytes());
                             break;
                         case "/play": {
-                            int size = Integer.parseInt(message.split(" ", 2)[0]);
-                            int bombs = Integer.parseInt(message.split(" ", 2)[1]);
+                            int size = Integer.parseInt(message.split(" ")[0]);
+                            int bombs = Integer.parseInt(message.split(" ")[1]);
                             minesweeper = new Minesweeper(size, bombs);
-                            timer.start();
-                            out.write(("/play " + size + " " + bombs + "\n" + minesweeper.toString() + "\n" +
-                                       "Game started with size " + size + " and bombs " + bombs + "!\n" +
-                                       "Commands: /pick [x] [y]").getBytes());
+
+                            if (message.split(" ").length > 2) {
+                                String opponent_name = message.split(" ")[2];
+                                Optional<User> opponent = broadcaster.getUsers().stream()
+                                        .filter(u -> u.username.equals(opponent_name)).findFirst();
+                                if (opponent.isPresent()) {
+                                    user.setOpponent(opponent.get()).setMinesweeper(minesweeper);
+                                    broadcaster.update(user);
+                                    broadcaster.update(opponent.get().setOpponent(user).setMinesweeper(minesweeper));
+                                    out.write(("Waiting for " + opponent_name + " to accept.\n").getBytes());
+                                    opponent.get().socket.getOutputStream()
+                                            .write((username + " challenged you for a DUAL! /accept to accept" + "\n").getBytes());
+                                } else {
+                                    out.write(("Server: Could not find " + opponent_name + "\n").getBytes());
+                                }
+
+                            } else {
+                                out.write(("/play " + size + " " + bombs + "\n" + minesweeper.toString() + "\n" +
+                                        "Game started with size " + size + " and bombs " + bombs + "!\n" +
+                                        "Commands: /pick [x] [y]").getBytes());
+                            }
+                            break;
+                        }
+                        case "/accept": {
+                            Optional<User> user_update = broadcaster.getUsers().stream()
+                                    .filter(u -> u.username.equals(username)).findFirst();
+                            if (user_update.isPresent()) {
+                                user = user_update.get();
+                                minesweeper = user.getMinesweeper();
+
+                                int size = minesweeper.getSize();
+                                int bombs = minesweeper.getBombs();
+                                String text = "/play " + size + " " + bombs + "\n" + minesweeper.toString() + "\n" +
+                                        "Game started with size " + size + " and bombs " + bombs + "!\n" +
+                                        "Commands: /pick [x] [y]\n";
+                                out.write(text.getBytes());
+                                user.getOpponent().socket.getOutputStream().write(text.getBytes());
+                            }
                             break;
                         }
                         case "/pick": {
                             int x = Integer.parseInt(message.split(" ", 2)[0]);
                             int y = Integer.parseInt(message.split(" ", 2)[1]);
                             String board = minesweeper.pick(x - 1, y - 1);
-                            out.write(("/board " + x + " " + y + "\n" + board + "\n" +
-                                       "Picked position (" + x + ", " + y + ")\n\n").getBytes());
+                            String text = "/board " + x + " " + y + "\n" + board + "\n" +
+                                    "Picked position (" + x + ", " + y + ")\n";
+                            out.write(text.getBytes());
+                            if (user.hasOpponent()) {
+                                user.getOpponent().socket.getOutputStream().write(text.getBytes());
+                            }
                             out.write((timer.getTime() + "\n").getBytes());
                             timer.switchTurn();
                             break;
