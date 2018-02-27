@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.stream.*;
 
 import model.Minesweeper;
-import model.BlitzTimer;
 
 public class Server {
 
@@ -30,7 +29,6 @@ public class Server {
 class ServerExchange extends Thread {
 
     private Minesweeper minesweeper;
-    private BlitzTimer timer;
     private Mailbox mailbox;
     private Broadcaster broadcaster;
     private Socket socket;
@@ -39,18 +37,17 @@ class ServerExchange extends Thread {
         this.mailbox = mailbox;
         this.broadcaster = broadcaster;
         this.socket = socket;
-        this.timer = new BlitzTimer(60);
     }
 
     private String welcome(Socket socket, BufferedReader in, OutputStream out) throws IOException {
         out.write(("Server: Welcome!\nPlease enter your username:" + "\n").getBytes());
         while (!socket.isClosed()) {
-            String input = in.readLine().trim();
+            String input = in.readLine();
             if (input == null) {
                 socket.close();
-            } else if (input.matches("^[a-zA-Z0-9_]{3,14}$")) {
-                out.write(("Server: Hi " + input + "\nHint: Use /help to see the server commands.\n").getBytes());
-                return input;
+            } else if (input.trim().matches("^[a-zA-Z0-9_]{3,14}$")) {
+                out.write(("Server: Hi " + input.trim() + "\nHint: Use /help to see the server commands.\n").getBytes());
+                return input.trim();
             } else {
                 out.write(("Server: Please only use alphanumeric values with underscore between 3 and 14 values.\n").getBytes());
             }
@@ -173,15 +170,14 @@ class ServerExchange extends Thread {
                                     if (user.hasOpponent()) {
                                         user.getOpponent().socket.getOutputStream().write(text.getBytes());
                                     }
-                                    int time = minesweeper.playerTime(username);
-                                    out.write(("/time" + time + "\n").getBytes());
+                                    out.write(("/time stop" + minesweeper.playerTime(username) + "\n").getBytes());
+                                    User opponent = user.getOpponent();
+                                    opponent.socket.getOutputStream()
+                                            .write(("/time start" + minesweeper.playerTime(opponent.username) + "\n").getBytes());
                                 }
                             } else {
                                 out.write("Not your turn! Chill ...\n".getBytes());
                             }
-
-                            out.write((timer.getTime() + "\n").getBytes());
-                            timer.switchTurn();
                             break;
                         }
                         default:
