@@ -69,7 +69,7 @@ public class RealBoard implements Board {
     @Override
     public void pick(Point p) {
         Set<Point> visited = new HashSet<>();
-        showNearbyZeros(p, visited);
+        expand(p, visited);
     }
 
     public boolean gameIsBeat() {
@@ -81,7 +81,7 @@ public class RealBoard implements Board {
         return true;
     }
 
-    private void showNearbyZeros(Point p, Set<Point> visited) {
+    private void expand(Point p, Set<Point> visited) {
         if (!visited.contains(p)) {
             visited.add(p);
             field.get(p).makeVisible();
@@ -89,7 +89,7 @@ public class RealBoard implements Board {
                 List<Point> neighbours = getNeighbourPoints(p);
                 for (Point nei : neighbours) {
                     field.get(p).makeVisible();
-                    showNearbyZeros(nei, visited);
+                    expand(nei, visited);
                 }
             }
         }

@@ -59,7 +59,6 @@ window.onload = function() {
     if (input.charAt(0) === '/') {
       var [args, input] = input.split(/\r?\n([\s\S]*)/);
       args = args.split(" ");
-      console.log('args', args);
       switch (args[0]) {
         case "/play":
           startGame(parseInt(args[1]), parseInt(args[2]), ws);
