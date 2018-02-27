@@ -6,45 +6,41 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 public class BlitzTimer extends Thread {
-	Boolean white;
-	int whiteTime, blackTime;
+	Boolean player1;
+	int player1Time, player2Time;
 
 	public BlitzTimer(int time) {
-		white = true;
-		this.blackTime = time;
-		this.whiteTime = time;
+		player1 = true;
+		this.player2Time = time;
+		this.player1Time = time;
+	}
+	public void switchTurn() {
+		player1 = !player1;
 	}
 
-	public void whiteTurn() {
-		white = true;
+	public boolean isplayer1Turn() {
+		return player1;
 	}
 
-	public void blackTurn() {
-		white = false;
-	}
-	public boolean isWhiteTurn(){
-		return white;
-	}
-	public boolean isBlackTurn(){
-		return !white;
-	}
-	
+
 	public void run() {
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				if (white) {
-					if (whiteTime == 0) {
+				if (player1) {
+					if (player1Time == 0) {
 						// insert white.lost or some shit here
 					} else {
-						whiteTime--;
+						player1Time--;
 					}
 				} else {
-					if (blackTime == 0) {
+					if (player2Time == 0) {
 						// black.lost
 					} else {
-						blackTime--;
+						player2Time--;
 					}
+					
 				}
+				System.out.println("Player1 : " + player1Time +"    Player2: " + player2Time);
 			}
 		};
 		new Timer(1000, taskPerformer).start();
