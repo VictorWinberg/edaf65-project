@@ -13,7 +13,8 @@ public class Point {
 
     @Override
     public int hashCode() {
-        return Integer.valueOf((String.valueOf(x) + String.valueOf(y)));
+        //maps X,Y to unique int.
+        return ((x + y) * (x + y + 1) )/ 2 + y;
     }
 
     public List<Point> getNeighbours() {
