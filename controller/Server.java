@@ -2,9 +2,11 @@ package controller;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 import java.util.stream.*;
 
 import model.Minesweeper;
+import model.BlitzTimer;
 
 public class Server {
 
@@ -28,6 +30,7 @@ public class Server {
 class ServerExchange extends Thread {
 
     private Minesweeper minesweeper;
+    private BlitzTimer timer;
     private Mailbox mailbox;
     private Broadcaster broadcaster;
     private Socket socket;
@@ -36,6 +39,7 @@ class ServerExchange extends Thread {
         this.mailbox = mailbox;
         this.broadcaster = broadcaster;
         this.socket = socket;
+        this.timer = new BlitzTimer(60);
     }
 
     private String welcome(Socket socket, BufferedReader in, OutputStream out) throws IOException {
@@ -89,6 +93,19 @@ class ServerExchange extends Thread {
                         case "/echo":
                             out.write((message + "\n").getBytes());
                             break;
+                        case "/w":
+                        case "/whisper":
+                            String to_username = message.split(" ", 2)[0].trim();
+                            message = message.split(" ", 2)[1].trim();
+                            Optional<User> to = broadcaster.getUsers().stream()
+                                    .filter(u -> u.username.equals(to_username)).findFirst();
+                            if (to.isPresent()) {
+                                out.write(("To " + to_username + ": " + message + "\n").getBytes());
+                                to.get().socket.getOutputStream().write((username + " whispers: " + message + "\n").getBytes());
+                            } else {
+                                out.write(("Server: Could not whisper " + to_username + "\n").getBytes());
+                            }
+                            break;
                         case "/q":
                         case "/quit":
                             socket.close();
@@ -102,6 +119,7 @@ class ServerExchange extends Thread {
                             int size = Integer.parseInt(message.split(" ", 2)[0]);
                             int bombs = Integer.parseInt(message.split(" ", 2)[1]);
                             minesweeper = new Minesweeper(size, bombs);
+                            timer.start();
                             out.write(("/play " + size + " " + bombs + "\n" + minesweeper.toString() + "\n" +
                                        "Game started with size " + size + " and bombs " + bombs + "!\n" +
                                        "Commands: /pick [x] [y]").getBytes());
@@ -113,6 +131,8 @@ class ServerExchange extends Thread {
                             String board = minesweeper.pick(x - 1, y - 1);
                             out.write(("/board " + x + " " + y + "\n" + board + "\n" +
                                        "Picked position (" + x + ", " + y + ")\n\n").getBytes());
+                            out.write((timer.getTime() + "\n").getBytes());
+                            timer.switchTurn();
                             break;
                         }
                         default:
