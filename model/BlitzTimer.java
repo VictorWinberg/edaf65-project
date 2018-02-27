@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 public class BlitzTimer extends Thread {
-    Boolean player1;
-    int player1Time, player2Time;
+    private boolean player1;
+    private int player1Time, player2Time;
 
     public BlitzTimer(int time) {
         player1 = true;

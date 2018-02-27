@@ -8,13 +8,11 @@ public class RealBoard implements Board {
     private HashMap<Point, Square> field;
     private int size;
     private int bombs;
-    private Set<Point> flagged;
 
     public RealBoard(int size, int bombs) {
         field = new HashMap<>(size * size);
         this.size = size;
         this.bombs = bombs;
-        flagged = new HashSet<>();
         fillAndAddBombs(bombs);
     }
 
@@ -58,18 +56,16 @@ public class RealBoard implements Board {
     }
 
     @Override
-    public void setFlag(Point p) {
-        if (!flagged.contains(p)) {
-            flagged.add(p);
-        } else {
-            flagged.remove(p);
-        }
-    }
-
-    @Override
     public void pick(Point p) {
         Set<Point> visited = new HashSet<>();
+        field.get(p).makeVisible();
         expand(p, visited);
+    }
+
+    private void showOnes() {
+        for (Map.Entry<Point, Square> cell : field.entrySet()) {
+
+        }
     }
 
     public boolean gameIsBeat() {
@@ -84,11 +80,11 @@ public class RealBoard implements Board {
     private void expand(Point p, Set<Point> visited) {
         if (!visited.contains(p)) {
             visited.add(p);
-            field.get(p).makeVisible();
             if (field.get(p).check() == 0) {
+                field.get(p).makeVisible();
                 List<Point> neighbours = getNeighbourPoints(p);
                 for (Point nei : neighbours) {
-                    field.get(p).makeVisible();
+                    field.get(nei).makeVisible();
                     expand(nei, visited);
                 }
             }
@@ -116,12 +112,7 @@ public class RealBoard implements Board {
                 if (field.get(p).isVisible()) {
                     list.put(p, field.get(p));
                 } else {
-                    if (flagged.contains(p)) {
-                        list.put(p, new FlaggedSquare());
-                    } else {
-                        list.put(p, new HiddenSquare());
-
-                    }
+                    list.put(p, new HiddenSquare());
                 }
             }
         }

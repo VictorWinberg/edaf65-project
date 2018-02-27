@@ -122,7 +122,7 @@ class ServerExchange extends Thread {
                             timer.start();
                             out.write(("/play " + size + " " + bombs + "\n" + minesweeper.toString() + "\n" +
                                        "Game started with size " + size + " and bombs " + bombs + "!\n" +
-                                       "Commands: /pick [x] [y], /flag [x] [y]\n").getBytes());
+                                       "Commands: /pick [x] [y]").getBytes());
                             break;
                         }
                         case "/pick": {
