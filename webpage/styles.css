@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 10vw 80vw 10vw;
+    grid-template-rows: 10vh 90vh;
+    grid-template-areas: "header header header" ".... content ....";
+    background-color: #999999;
+}
+
+.header {
+    grid-area: header;
+    background-color: darkblue;
+}
+
+.content {
+    grid-area: content;
+    background-color: blue;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20% 20% 15% 20% 10% 10% 5%;
+    grid-template-areas: "firstText" "firstImage" "secondText" "secondImage" "lastText" "...." "footer";
+}
+
+.firstText {
+    grid-area: firstText;
+    background-color: firebrick;
+}
+
+.firstImage {
+    grid-area: firstImage;
+}
+
+.secondText {
+    grid-area: secondText;
+    background-color: #86b32d;
+}
+
+.secondImage{
+    grid-area: secondImage;
+}
+
+.lastText{
+    grid-area: lastText;
+    background-color: #BABABA;
+}
+
+.footer {
+    grid-area: footer;
+    background-color: mediumvioletred;
+}

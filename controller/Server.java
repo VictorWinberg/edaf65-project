@@ -115,13 +115,14 @@ class ServerExchange extends Thread {
                         case "/play": {
                             int size = Integer.parseInt(message.split(" ")[0]);
                             int bombs = Integer.parseInt(message.split(" ")[1]);
-                            minesweeper = new Minesweeper(size, bombs);
+                            minesweeper = new Minesweeper(size, bombs, user.username);
 
                             if (message.split(" ").length > 2) {
                                 String opponent_name = message.split(" ")[2];
                                 Optional<User> opponent = broadcaster.getUsers().stream()
                                         .filter(u -> u.username.equals(opponent_name)).findFirst();
                                 if (opponent.isPresent()) {
+                                    minesweeper.initChallenge(opponent.get().username, 60);
                                     user.setOpponent(opponent.get()).setMinesweeper(minesweeper);
                                     broadcaster.update(opponent.get().setOpponent(user).setMinesweeper(minesweeper));
                                     out.write(("Waiting for " + opponent_name + " to accept.\n").getBytes());
