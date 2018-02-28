@@ -3,45 +3,47 @@ body {
     display: grid;
     grid-template-columns: 10vw 80vw 10vw;
     grid-template-rows: 10vh 90vh;
-    grid-template-areas:
-            "header header header"
-            ".... content ....";
-    background-color: #999999;
+    grid-template-areas: "header header header" ".... content ....";
 }
 
 .header {
     grid-area: header;
-    background-color: darkblue;
+    background-color: lightblue;
+    text-align: center;
+    display: grid;
+    grid-template-rows: 6vh 4vh;
 }
 
 .content {
     grid-area: content;
-    background-color: blue;
     display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 20% 20% 15% 20% 10% 10% 5%;
-    grid-template-areas: "firstText" "firstImage" "secondText" "secondImage" "lastText" "...." "footer";
+    grid-template-columns: 70% 30%;
+    grid-template-rows: 650px 20% 465px 20% 10% 10% 5%;
+    grid-template-areas: "firstImage firstImage" "firstText firstText" "secondText nicki" "secondImage secondImage" "lastText lastText" ".... ...." "footer footer";
 }
 
 .firstText {
     grid-area: firstText;
-    background-color: firebrick;
+    background-color: lightblue;
 }
 
 .firstImage {
     grid-area: firstImage;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .secondText {
     grid-area: secondText;
-    background-color: #86b32d;
+    background-color: dodgerblue;
 }
 
-.secondImage{
+.secondImage {
     grid-area: secondImage;
 }
 
-.lastText{
+.lastText {
     grid-area: lastText;
     background-color: #BABABA;
 }
@@ -49,4 +51,12 @@ body {
 .footer {
     grid-area: footer;
     background-color: mediumvioletred;
+}
+
+.nicki {
+    grid-area: nicki;
+}
+
+.bottomtext {
+    grid-row-start: 2;
 }
