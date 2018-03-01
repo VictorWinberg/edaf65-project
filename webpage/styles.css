@@ -19,7 +19,14 @@ body {
     display: grid;
     grid-template-columns: 70% 30%;
     grid-template-rows: 650px 20% 465px 20% 10% 10% 5%;
-    grid-template-areas: "firstImage firstImage" "firstText firstText" "secondText nicki" "secondImage secondImage" "lastText lastText" ".... ...." "footer footer";
+    grid-template-areas:
+            "firstImage  firstImage"
+            "firstText   firstText"
+            "secondText  nicki"
+            "secondImage secondImage"
+            "lastText    lastText"
+            "....        ...."
+            "footer      footer";
 }
 
 .firstText {

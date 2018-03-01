@@ -30,6 +30,13 @@ public class Minesweeper {
         return board.makeHiddenBoard().toString();
     }
 
+    public boolean didILose(String name) {
+        if (!playerTurn(name) && board.gameIsBeat()) {
+            return true;
+        }
+        return playerTime(name) == 0;
+    }
+
     public int[][] getUserBoard() {
         return board.makeHiddenBoard().readable();
     }
