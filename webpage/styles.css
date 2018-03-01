@@ -2,7 +2,8 @@ body {
     margin: 0;
     display: grid;
     grid-template-columns: 10vw 80vw 10vw;
-    grid-template-rows: 10vh 90vh;
+    text-align: center;
+    grid-template-rows: 20vh 80vh;
     grid-template-areas: "header header header" "content content content";
 }
 
@@ -24,20 +25,27 @@ img {
     grid-area: content;
     display: grid;
     grid-template-columns: 60% 40%;
-    grid-template-rows: 650px 25% 465px 465px 10% 10% 5%;
+    grid-template-rows: 650px 25% 465px 10% 75px 30px;
     grid-template-areas:
             "firstImage  firstImage"
             "firstText   firstText"
-            "secondImage secondImage"
             "secondText  nicki"
-            "lastText    lastText"
+            "credits    credits"
             "....        ...."
             "footer      footer";
 }
 
 .firstText {
+    display:grid;
+    grid-template-columns: 30% 40% 30%;
     grid-area: firstText;
     background-color: lightblue;
+     grid-template-areas:
+                ".... oversikt ...."
+}
+
+.oversikt {
+grid-area:oversikt
 }
 
 .firstImage {
@@ -49,21 +57,21 @@ img {
 
 .secondText {
     grid-area: secondText;
-    background-color: dodgerblue;
+    background-color: white;
 }
 
 .secondImage {
     grid-area: secondImage;
 }
 
-.lastText {
-    grid-area: lastText;
-    background-color: #BABABA;
+.credits {
+    grid-area: credits;
+    background-color: lightblue;
 }
 
 .footer {
     grid-area: footer;
-    background-color: mediumvioletred;
+    background-color: lightblue;
 }
 
 .nicki {
