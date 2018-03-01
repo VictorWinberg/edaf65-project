@@ -165,19 +165,26 @@ class ServerExchange extends Thread {
                                 if (board == null) {
                                     out.write("Illegal move! Please try again\n".getBytes());
                                 } else {
-                                    String text = "/board " + x + " " + y + "\n" + board + "\n" +
-                                            "Picked position (" + x + ", " + y + ")\n";
-                                    out.write(text.getBytes());
+                                    String board_text = "/board " + x + " " + y + "\n" + board + "\n";
+                                    String pick_text = "Picked position (" + x + ", " + y + ")\n";
+                                    out.write(board_text.getBytes());
                                     if (user.hasOpponent()) {
-                                        user.getOpponent().socket.getOutputStream().write(text.getBytes());
+                                        User opponent = user.getOpponent();
+                                        OutputStream opp_out = opponent.socket.getOutputStream();
+                                        opp_out.write(board_text.getBytes());
+
+                                        out.write(("/time stop " + minesweeper.playerTime(username) + "\n").getBytes());
+                                        opp_out.write(("/time start " + minesweeper.playerTime(opponent.username) + "\n").getBytes());
+
+                                        opp_out.write(pick_text.getBytes());
+                                        opp_out.flush();
                                     }
-                                    out.write(("/time stop" + minesweeper.playerTime(username) + "\n").getBytes());
-                                    User opponent = user.getOpponent();
-                                    opponent.socket.getOutputStream()
-                                            .write(("/time start" + minesweeper.playerTime(opponent.username) + "\n").getBytes());
+                                    out.write(pick_text.getBytes());
+                                    out.flush();
                                 }
                             } else {
                                 out.write("Not your turn! Chill ...\n".getBytes());
+                                out.flush();
                             }
                             break;
                         }

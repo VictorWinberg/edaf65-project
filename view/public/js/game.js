@@ -157,7 +157,6 @@ function setTimer(id) {
 
 function setup(size, mines, canvas, ws) {
   /* Setup the minesweeper game */
-  timer.start();
   board = new Board(size, mines, canvas, ws);
   updateTextNode("mines", "x" + board.mineNumber);
   board.draw(canvas);

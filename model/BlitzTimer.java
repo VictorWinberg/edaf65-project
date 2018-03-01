@@ -58,8 +58,8 @@ public class BlitzTimer {
             } else {
                 guestTime--;
             }
-            System.out.println("hosttime is: " + hostTime);
-            System.out.println("guesttime is: " + guestTime);
+            System.out.println(host + " time is: " + hostTime);
+            System.out.println(guest + " time is: " + guestTime);
         }));
         timer.start();
     }

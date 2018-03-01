@@ -77,7 +77,23 @@ window.onload = function() {
           board.updateSquares(row * board.column + col);
 
           input = inputs.join('\n').trim();
-          break;
+          if (input.charAt(0) !== '/') {
+            break;
+          } else {
+            [args, input] = input.split(/\r?\n([\s\S]*)/);
+            args = args.split(" ");
+          }
+        case "/time":
+          var type = args[1];
+          var time = parseInt(args[2]);
+          switch (type) {
+            case "start":
+              timer.start(time);
+              break;
+            case "stop":
+              timer.stop();
+            break;
+          }
       }
     }
 

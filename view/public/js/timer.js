@@ -4,7 +4,7 @@ function Timer() {
   this.count = function() {
     /* Update the counter value when called */
     var now = new Date();
-    var diff = now.getTime() - this.time.getTime();
+    var diff = Math.abs(now.getTime() - this.time.getTime());
 
     var minutes = Math.floor(diff / 60000);
     var seconds = ((diff % 60000) / 1000).toFixed(0);
@@ -23,7 +23,7 @@ function Timer() {
   this.start = function(startTime) {
     /* Set the timer start time and start counting */
     var self = this;
-    this.time = startTime || new Date();
+    this.time = new Date(new Date().getTime() + startTime * 1000) || new Date();
     this.timer = setInterval(function() {
       self.count();
     }, 1000);
