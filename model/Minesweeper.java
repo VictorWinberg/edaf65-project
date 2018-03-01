@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Optional;
+
 public class Minesweeper {
     private RealBoard board;
     private BlitzTimer timer;
@@ -18,23 +20,22 @@ public class Minesweeper {
         if (board.isVisible(p)) {
             return null;
         } else if (board.isBomb(p)) {
+            timer.currentPlayerLost();
             return board + "\nYOU LOSE #NICETRYBRO";
 
         }
         board.pick(p);
 
         if (board.gameIsBeat()) {
+            timer.currentPlayerWon();
             return board + "\nYOU WIN U ARE AMAAAAZING. WOOOOOOOOW. really. you did it.";
         }
         timer.switchPlayer();
         return board.makeHiddenBoard().toString();
     }
 
-    public boolean didILose(String name) {
-        if (!playerTurn(name) && board.gameIsBeat()) {
-            return true;
-        }
-        return playerTime(name) == 0;
+    public Optional<String> didSomeOneWin() {
+        return timer.getWinnerIfExists();
     }
 
     public int[][] getUserBoard() {

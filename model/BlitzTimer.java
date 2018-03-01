@@ -3,6 +3,7 @@ package model;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 public class BlitzTimer {
     private String host;
@@ -11,11 +12,13 @@ public class BlitzTimer {
     private int hostTime;
     private int guestTime;
     private boolean isStarted;
+    private String winner;
 
     public BlitzTimer(String host) {
         isStarted = false;
         this.host = host;
         currentPlayer = host;
+        winner = null;
     }
 
     public void start() {
@@ -50,7 +53,12 @@ public class BlitzTimer {
 
     private void run() {
         Timer timer = new Timer(1000, (e -> {
-            if (hostTime == 0 || guestTime == 0) {
+            if (hostTime == 0) {
+                winner = guest;
+                return;
+            }
+            if (guestTime == 0) {
+                winner = host;
                 return;
             }
             if (host.equals(currentPlayer)) {
@@ -62,5 +70,17 @@ public class BlitzTimer {
             System.out.println(guest + " time is: " + guestTime);
         }));
         timer.start();
+    }
+
+    public Optional<String> getWinnerIfExists() {
+        return Optional.of(winner);
+    }
+
+    public void currentPlayerLost() {
+        winner = currentPlayer.equalsIgnoreCase(host) ? guest : host;
+    }
+
+    public void currentPlayerWon() {
+        winner = currentPlayer.equalsIgnoreCase(host) ? host : guest;
     }
 }
