@@ -1,2 +1,2 @@
 # edaf65-project
-Nätverksprogrammering Projekt
+Network Programming | Computer Science
