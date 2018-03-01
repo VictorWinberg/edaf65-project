@@ -47,6 +47,9 @@ img {
 .oversikt {
 grid-area:oversikt
 }
+ol,li{
+list-style-type:none;
+}
 
 .firstImage {
     grid-area: firstImage;
@@ -58,6 +61,7 @@ grid-area:oversikt
 .secondText {
     grid-area: secondText;
     background-color: white;
+    text-align:right;
 }
 
 .secondImage {
