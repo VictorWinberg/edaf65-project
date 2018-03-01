@@ -33,7 +33,7 @@ public class Minesweeper {
         timer.switchPlayer();
         return board.makeHiddenBoard().toString();
     }
-
+    
     public Optional<String> didSomeOneWin() {
         return timer.getWinnerIfExists();
     }

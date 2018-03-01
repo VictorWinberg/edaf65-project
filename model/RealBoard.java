@@ -62,12 +62,6 @@ public class RealBoard implements Board {
         expand(p, visited);
     }
 
-    private void showOnes() {
-        for (Map.Entry<Point, Square> cell : field.entrySet()) {
-
-        }
-    }
-
     public boolean gameIsBeat() {
         for (Square sq : field.values()) {
             if (sq.check() > 0 && !sq.isVisible()) {
