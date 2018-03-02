@@ -161,6 +161,7 @@ class ServerExchange extends Thread {
                             if (minesweeper.playerTurn(username)) {
                                 if (minesweeper.playerTime(username) == 0) {
                                     out.write("YOU LOSE BY TIME.".getBytes());
+                                    user.getOpponent().socket.getOutputStream().write("YOU WIN by time.".getBytes());
                                 } else {
                                     int x = Integer.parseInt(message.split(" ", 2)[0]);
                                     int y = Integer.parseInt(message.split(" ", 2)[1]);
@@ -170,6 +171,16 @@ class ServerExchange extends Thread {
                                     } else {
                                         String board_text = "/board " + x + " " + y + "\n" + board + "\n";
                                         String pick_text = "Picked position (" + x + ", " + y + ")\n";
+                                        if (minesweeper.didSomeOneWin().isPresent()) {
+                                            if(minesweeper.didSomeOneWin().get().equals(username)){
+                                                out.write("YOU WIN!!!".getBytes());
+                                                user.getOpponent().socket.getOutputStream().write("you lose.".getBytes());
+                                            } else {
+                                                user.getOpponent().socket.getOutputStream().write("you WIN!!".getBytes());
+                                                out.write("you lose......!!!".getBytes());
+                                            }
+                                            continue;
+                                        }
                                         out.write(board_text.getBytes());
                                         if (user.hasOpponent()) {
                                             User opponent = user.getOpponent();
