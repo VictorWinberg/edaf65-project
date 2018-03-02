@@ -170,7 +170,7 @@ class ServerExchange extends Thread {
                                         out.write("Illegal move! Please try again\n".getBytes());
                                     } else {
                                         String board_text = "/board " + x + " " + y + "\n" + board + "\n";
-                                        String pick_text = "Picked position (" + x + ", " + y + ")\n";
+                                        String pick_text = "Picked position (" + x + ", " + y + ")\n"; 
                                         if (minesweeper.didSomeOneWin().isPresent()) {
                                             if(minesweeper.didSomeOneWin().get().equals(username)){
                                                 out.write("YOU WIN!!!".getBytes());
