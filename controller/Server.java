@@ -159,42 +159,28 @@ class ServerExchange extends Thread {
                         }
                         case "/pick": {
                             if (minesweeper.playerTurn(username)) {
-                                if (minesweeper.playerTime(username) == 0) {
-                                    out.write("YOU LOSE BY TIME.".getBytes());
-                                    user.getOpponent().socket.getOutputStream().write("YOU WIN by time.".getBytes());
+                                int x = Integer.parseInt(message.split(" ", 2)[0]);
+                                int y = Integer.parseInt(message.split(" ", 2)[1]);
+                                String board = minesweeper.pick(x - 1, y - 1);
+                                if (board == null) {
+                                    out.write("Illegal move! Please try again\n".getBytes());
                                 } else {
-                                    int x = Integer.parseInt(message.split(" ", 2)[0]);
-                                    int y = Integer.parseInt(message.split(" ", 2)[1]);
-                                    String board = minesweeper.pick(x - 1, y - 1);
-                                    if (board == null) {
-                                        out.write("Illegal move! Please try again\n".getBytes());
-                                    } else {
-                                        String board_text = "/board " + x + " " + y + "\n" + board + "\n";
-                                        String pick_text = "Picked position (" + x + ", " + y + ")\n"; 
-                                        if (minesweeper.didSomeOneWin().isPresent()) {
-                                            if(minesweeper.didSomeOneWin().get().equals(username)){
-                                                out.write("YOU WIN!!!".getBytes());
-                                                user.getOpponent().socket.getOutputStream().write("you lose.".getBytes());
-                                            } else {
-                                                user.getOpponent().socket.getOutputStream().write("you WIN!!".getBytes());
-                                                out.write("you lose......!!!".getBytes());
-                                            }
-                                            continue;
-                                        }
-                                        out.write(board_text.getBytes());
-                                        if (user.hasOpponent()) {
-                                            User opponent = user.getOpponent();
-                                            OutputStream opp_out = opponent.socket.getOutputStream();
-                                            opp_out.write(board_text.getBytes());
+                                    String board_text = "/board " + x + " " + y + "\n" + board + "\n";
+                                    String pick_text = "Picked position (" + x + ", " + y + ")\n";
+                                    out.write(board_text.getBytes());
+                                    if (user.hasOpponent()) {
+                                        User opponent = user.getOpponent();
+                                        OutputStream opp_out = opponent.socket.getOutputStream();
+                                        opp_out.write(board_text.getBytes());
 
-                                            out.write(("/time stop " + minesweeper.playerTime(username) + "\n").getBytes());
-                                            opp_out.write(("/time start " + minesweeper.playerTime(opponent.username) + "\n").getBytes());
-                                            opp_out.write(pick_text.getBytes());
-                                            opp_out.flush();
-                                        }
-                                        out.write(pick_text.getBytes());
-                                        out.flush();
+                                        out.write(("/time stop " + minesweeper.playerTime(username) + "\n").getBytes());
+                                        opp_out.write(("/time start " + minesweeper.playerTime(opponent.username) + "\n").getBytes());
+
+                                        opp_out.write(pick_text.getBytes());
+                                        opp_out.flush();
                                     }
+                                    out.write(pick_text.getBytes());
+                                    out.flush();
                                 }
                             } else {
                                 out.write("Not your turn! Chill ...\n".getBytes());
