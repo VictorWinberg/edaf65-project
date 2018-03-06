@@ -88,7 +88,7 @@ input {
   box-sizing: border-box;
 }
 
-button {
+button, a {
   display: inline-block;
   border-radius: 3px;
   border: none;
@@ -99,10 +99,16 @@ button {
   text-align: center;
   background: #BABABA;
   border-bottom: 1px solid #999;
+  text-decoration: none;
 }
 
 button[type="submit"] {
   background: #86b32d;
+  border-bottom: 1px solid #5d7d1f;
+}
+
+a {
+  background: #2d5ab3;
   border-bottom: 1px solid #5d7d1f;
 }
 
